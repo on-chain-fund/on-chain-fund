@@ -10,7 +10,7 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-blue-600">
+            <Link href="/" className="text-xl font-bold text-blue-600 font-[Nunito Sans]">
               OnChainFund
             </Link>
             <nav className="ml-8 hidden md:flex space-x-4">

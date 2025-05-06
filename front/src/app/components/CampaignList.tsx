@@ -62,17 +62,18 @@ export function CampaignList() {
       <div className="flex space-x-2 mb-6 overflow-x-auto pb-2">
         <button
           onClick={() => setFilter('all')}
-          className={`px-4 py-2 rounded-full text-sm font-medium ${
+          className={`px-6 py-4 rounded-md text-sm font-medium ${
             filter === 'all' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+          }`
+        }
         >
           All Campaigns
         </button>
         <button
           onClick={() => setFilter('active')}
-          className={`px-4 py-2 rounded-full text-sm font-medium ${
+          className={`px-6 py-4 rounded-md text-sm font-medium ${
             filter === 'active' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -82,7 +83,7 @@ export function CampaignList() {
         </button>
         <button
           onClick={() => setFilter('funded')}
-          className={`px-4 py-2 rounded-full text-sm font-medium ${
+          className={`px-6 py-4 rounded-md text-sm font-medium ${
             filter === 'funded' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -93,7 +94,7 @@ export function CampaignList() {
         <button
           onClick={() => setFilter('my-campaigns')}
           disabled={!address}
-          className={`px-4 py-2 rounded-full text-sm font-medium ${
+          className={`px-6 py-4 rounded-full text-sm font-medium ${
             filter === 'my-campaigns' 
               ? 'bg-blue-600 text-white' 
               : address 
