@@ -1,11 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { usePrivy } from '@privy-io/react-auth';
-import { CampaignFormData } from '../types/campaign';
-import { createCampaign } from '../utils/api';
-import Header from '../components/Header';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useAccount } from 'wagmi';
+import { Campaign } from '../types/campaign';
+import { useCreateCampaign } from '../utils/api';
+import { Header } from '../components/Header';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 const CATEGORIES = [
   'Art',
   'Comics',
@@ -32,50 +32,55 @@ const CATEGORIES = [
 ];
 export default function CreateCampaign() {
   const router = useRouter();
-  const { ready, authenticated, user, login } = usePrivy();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { address, isConnected } = useAccount();
+  const { createCampaign, isPending, isSuccess } = useCreateCampaign();
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<CampaignFormData>({
+  const [formData, setFormData] = useState<Omit<Campaign, 'id' | 'status' | 'raised'>>({
     title: '',
     description: '',
-    fundingGoal: 1000,
-    endDate: '',
+    goal: 1000,
+    endDate: new Date(),
     category: 'Technology',
     imageUrl: '',
+    creator: '',
   });
   // Set minimum end date to tomorrow
   useEffect(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
     
     setFormData(prev => ({
       ...prev,
-      endDate: tomorrowStr,
+      endDate: tomorrow,
     }));
   }, []);
   useEffect(() => {
-    // Redirect to login if not authenticated
-    if (ready && !authenticated) {
-      login();
+    // Redirect to home if not connected
+    if (!isConnected) {
+      router.push('/');
     }
-  }, [ready, authenticated, login]);
+  }, [isConnected, router]);
+  useEffect(() => {
+    // Redirect to home when campaign is successfully created
+    if (isSuccess) {
+      router.push('/');
+    }
+  }, [isSuccess, router]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'fundingGoal' ? Number(value) : value,
+      [name]: name === 'goal' ? Number(value) : value,
     }));
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      setIsSubmitting(true);
       setError(null);
       
-      if (!authenticated || !user?.wallet?.address) {
-        throw new Error('You must be logged in to create a campaign');
+      if (!isConnected || !address) {
+        throw new Error('You must connect your wallet to create a campaign');
       }
       
       // Validate form data
@@ -87,7 +92,7 @@ export default function CreateCampaign() {
         throw new Error('Description is required');
       }
       
-      if (formData.fundingGoal <= 0) {
+      if (formData.goal <= 0) {
         throw new Error('Funding goal must be greater than 0');
       }
       
@@ -103,25 +108,22 @@ export default function CreateCampaign() {
       }
       
       // Create the campaign
-      const creatorAddress = user.wallet.address;
-      const creatorName = user.email?.address?.split('@')[0] || 'Anonymous';
+      await createCampaign({
+        ...formData,
+        creator: address,
+      });
       
-      const campaign = await createCampaign(formData, creatorAddress, creatorName);
-      
-      // Redirect to the campaign page
-      router.push(`/campaign/${campaign.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Error creating campaign:', err);
-      setIsSubmitting(false);
     }
   };
-  if (!ready || !authenticated) {
+  if (!isConnected) {
     return (
       <div>
         <Header />
         <div className="flex justify-center items-center min-h-[60vh]">
-          <LoadingSpinner size="large" />
+          <LoadingSpinner />
         </div>
       </div>
     );
@@ -169,14 +171,14 @@ export default function CreateCampaign() {
                   value={formData.description}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Describe your project, what you're raising funds for, and how you'll use the funds"
+                  placeholder="Describe your project, what you&apos;re raising funds for, and how you&apos;ll use the funds"
                   required
                 />
               </div>
               
               {/* Funding Goal */}
               <div>
-                <label htmlFor="fundingGoal" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="goal" className="block text-sm font-medium text-gray-700">
                   Funding Goal (USDC) *
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -185,9 +187,9 @@ export default function CreateCampaign() {
                   </div>
                   <input
                     type="number"
-                    name="fundingGoal"
-                    id="fundingGoal"
-                    value={formData.fundingGoal}
+                    name="goal"
+                    id="goal"
+                    value={formData.goal}
                     onChange={handleChange}
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                     placeholder="0.00"
@@ -200,7 +202,7 @@ export default function CreateCampaign() {
                   </div>
                 </div>
                 <p className="mt-1 text-sm text-gray-500">
-                  Set a realistic goal. You'll only receive funds if your goal is met.
+                  Set a realistic goal. You&apos;ll only receive funds if your goal is met.
                 </p>
               </div>
               
@@ -213,7 +215,7 @@ export default function CreateCampaign() {
                   type="date"
                   name="endDate"
                   id="endDate"
-                  value={formData.endDate}
+                  value={formData.endDate.toISOString().split('T')[0]}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   required
@@ -280,14 +282,14 @@ export default function CreateCampaign() {
               </button>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isPending}
                 className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-                  isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                  isPending ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
                 } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
               >
-                {isSubmitting ? (
+                {isPending ? (
                   <div className="flex items-center">
-                    <LoadingSpinner size="small" />
+                    <LoadingSpinner />
                     <span className="ml-2">Creating...</span>
                   </div>
                 ) : (
