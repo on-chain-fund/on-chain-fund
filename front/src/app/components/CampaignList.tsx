@@ -94,7 +94,7 @@ export function CampaignList() {
         <button
           onClick={() => setFilter('my-campaigns')}
           disabled={!address}
-          className={`px-6 py-4 rounded-full text-sm font-medium ${
+          className={`px-6 py-4 rounded-md text-sm font-medium ${
             filter === 'my-campaigns' 
               ? 'bg-blue-600 text-white' 
               : address 

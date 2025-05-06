@@ -19,7 +19,7 @@ function CreateCampaignButton() {
     <>
       <button
         onClick={handleClick}
-        className="bg-black py-4 px-3 rounded-md text-white"
+        className="bg-black px-4 rounded-md text-white"
       >
         Create Campaign
       </button>

@@ -1,7 +1,8 @@
 'use client';
 import { Avatar, Name } from '@coinbase/onchainkit/identity';
 import { Wallet, ConnectWallet, WalletDropdown } from '@coinbase/onchainkit/wallet';
-import Header from '../components/Header';
+import { Header } from '../components/Header';
+
 export default function HowItWorks() {
   return (
     <div className="min-h-screen bg-gray-50">
