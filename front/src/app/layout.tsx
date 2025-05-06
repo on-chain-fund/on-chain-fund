@@ -1,7 +1,7 @@
 import '@coinbase/onchainkit/styles.css';
 import './globals.css';
 import { Providers } from './providers';
-import { Header } from './components/Header';
+import Header from './components/Header';
 
 export const metadata = {
   title: 'OnChainFund - Decentralized Crowdfunding',

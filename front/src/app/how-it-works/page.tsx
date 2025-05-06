@@ -1,140 +1,106 @@
-
+'use client';
+import { Avatar, Name } from '@coinbase/onchainkit/identity';
+import { Wallet, ConnectWallet, WalletDropdown } from '@coinbase/onchainkit/wallet';
+import Header from '../components/Header';
 export default function HowItWorks() {
-    return (
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">How OnChainFund Works</h1>
-          <p className="text-gray-600">
-            Learn how our decentralized crowdfunding platform operates on the Base blockchain
-          </p>
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-black">How BaseFunder Works</h1>
+          <Wallet>
+            <ConnectWallet>
+              <Avatar className="h-6 w-6" />
+              <Name />
+            </ConnectWallet>
+            <WalletDropdown />
+          </Wallet>
         </div>
         
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="space-y-8">
-            <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">For Project Creators</h2>
-              <div className="space-y-4">
-                <div className="flex">
-                  <div className="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-blue-600 font-medium">1</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">Create Your Campaign</h3>
-                    <p className="text-gray-600 mt-1">
-                      Connect your wallet and fill out the campaign creation form with your project details, funding goal, and campaign duration.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <div className="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-blue-600 font-medium">2</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">Share Your Campaign</h3>
-                    <p className="text-gray-600 mt-1">
-                      Once your campaign is live, share it with your network to attract backers. Your campaign will also be discoverable on our platform.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <div className="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-blue-600 font-medium">3</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">Receive Funding</h3>
-                    <p className="text-gray-600 mt-1">
-                      If your campaign reaches its funding goal before the deadline, you'll receive the funds in USDC directly to your wallet. If not, all contributions will be automatically refunded to backers.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
+        <div className="bg-white rounded-lg shadow-md p-8">
+          <div className="prose max-w-none text-black">
+            <h2>Decentralized Crowdfunding on Base</h2>
+            <p>
+              BaseFunder is a decentralized crowdfunding platform built on the Base blockchain. 
+              It allows creators to raise funds for their projects directly from the community, 
+              with all transactions happening on-chain for maximum transparency and security.
+            </p>
             
-            <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">For Backers</h2>
-              <div className="space-y-4">
-                <div className="flex">
-                  <div className="flex-shrink-0 h-8 w-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-green-600 font-medium">1</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">Discover Campaigns</h3>
-                    <p className="text-gray-600 mt-1">
-                      Browse through campaigns on our platform and find projects you'd like to support.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <div className="flex-shrink-0 h-8 w-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-green-600 font-medium">2</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">Fund Projects</h3>
-                    <p className="text-gray-600 mt-1">
-                      Connect your wallet and contribute USDC to campaigns you believe in. If you don't have USDC, you can easily buy it directly through our platform.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <div className="flex-shrink-0 h-8 w-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-green-600 font-medium">3</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">Track Progress</h3>
-                    <p className="text-gray-600 mt-1">
-                      Follow the campaigns you've backed and see their progress toward their funding goals.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
+            <h3>For Creators</h3>
+            <ol>
+              <li>
+                <strong>Create a Campaign</strong> - Set up your project with a funding goal, 
+                deadline, and description. All campaigns are stored on the blockchain.
+              </li>
+              <li>
+                <strong>Share Your Campaign</strong> - Once created, share your campaign with 
+                your community and the wider BaseFunder audience.
+              </li>
+              <li>
+                <strong>Receive Funds</strong> - If your campaign reaches its funding goal before 
+                the deadline, you can claim the funds to your wallet. If not, all contributions 
+                are automatically refunded to the funders.
+              </li>
+            </ol>
             
-            <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">How It Works Technically</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">All-or-Nothing Model</h3>
-                  <p className="text-gray-600 mt-1">
-                    OnChainFund uses an all-or-nothing funding model. This means that creators only receive funds if their campaign reaches or exceeds its funding goal by the deadline. If the goal isn't met, all contributions are automatically refunded to backers.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">Smart Wallet Integration</h3>
-                  <p className="text-gray-600 mt-1">
-                    Our platform uses smart wallet technology to make it easy for anyone to participate, even if they're new to cryptocurrency. You can create a wallet directly through our platform.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">Gasless Transactions</h3>
-                  <p className="text-gray-600 mt-1">
-                    We cover gas fees for transactions on our platform, making it seamless for users to create campaigns and contribute to projects without worrying about network fees.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">Fiat On-ramp</h3>
-                  <p className="text-gray-600 mt-1">
-                    Don't have cryptocurrency? No problem. Our platform allows you to buy USDC directly with your credit card, making it easy to fund campaigns without prior crypto experience.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">Base Blockchain</h3>
-                  <p className="text-gray-600 mt-1">
-                    OnChainFund operates on the Base blockchain, providing fast, low-cost transactions with the security of Ethereum. All campaign funds and transactions are transparent and verifiable on the blockchain.
-                  </p>
-                </div>
-              </div>
-            </section>
+            <h3>For Funders</h3>
+            <ol>
+              <li>
+                <strong>Browse Campaigns</strong> - Explore campaigns across different categories 
+                and find projects you want to support.
+              </li>
+              <li>
+                <strong>Fund Projects</strong> - Contribute ETH to campaigns you believe in. You can 
+                use your existing crypto wallet or purchase ETH directly through our platform.
+              </li>
+              <li>
+                <strong>Get Refunds Automatically</strong> - If a campaign doesn't reach its goal by 
+                the deadline, your contribution is automatically refunded to your wallet.
+              </li>
+            </ol>
+            
+            <h3>Key Features</h3>
+            <ul>
+              <li>
+                <strong>Smart Wallet Integration</strong> - Use Coinbase's Smart Wallet for a seamless 
+                experience, even if you're new to crypto.
+              </li>
+              <li>
+                <strong>Fiat Onramp</strong> - Purchase ETH directly with your credit card or bank account 
+                to fund projects.
+              </li>
+              <li>
+                <strong>Gas-Free Transactions</strong> - We cover gas fees for your transactions through 
+                the Paymaster API, making it easier to participate.
+              </li>
+              <li>
+                <strong>All-or-Nothing Funding</strong> - Creators only receive funds if they reach their 
+                goal, protecting funders from partially funded projects.
+              </li>
+              <li>
+                <strong>Transparent & Secure</strong> - All transactions are recorded on the Base blockchain, 
+                providing full transparency and security.
+              </li>
+            </ul>
+            
+            <h3>Smart Contract Security</h3>
+            <p>
+              Our platform is built on secure, audited smart contracts that handle the escrow of funds 
+              and automatic distribution based on campaign outcomes. The code is open-source and 
+              verifiable on the blockchain.
+            </p>
+            
+            <h3>Getting Started</h3>
+            <p>
+              Ready to start? Connect your wallet using the button in the top right corner, or create 
+              a new Smart Wallet directly through our platform. Once connected, you can create a campaign 
+              or browse existing ones to fund.
+            </p>
           </div>
         </div>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}

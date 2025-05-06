@@ -1,5 +1,6 @@
 'use client';
 import { CampaignList } from './components/CampaignList';
+import CreateCampaignButton from './components/CreateCampaignButton';
 export default function Home() {
   return (
     <div>
@@ -8,6 +9,7 @@ export default function Home() {
         <p className="text-gray-600">
           Fund innovative projects on the blockchain with OnChainFund
         </p>
+        <CreateCampaignButton/>
       </div>
       
       <CampaignList />
