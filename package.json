@@ -1,0 +1,29 @@
+{
+  "name": "on-chain-fund",
+  "private": true,
+  "workspaces": [
+    "front",
+    "back"
+  ],
+  "scripts": {
+    "dev:front": "yarn workspace front dev",
+    "dev:back": "yarn workspace back start:dev",
+    "dev": "concurrently \"yarn dev:front\" \"yarn dev:back\"",
+    "build:front": "yarn workspace front build",
+    "build:back": "yarn workspace back build",
+    "build": "yarn build:front && yarn build:back",
+    "start:front": "yarn workspace front start",
+    "start:back": "yarn workspace back start:prod",
+    "start": "concurrently \"yarn start:front\" \"yarn start:back\"",
+    "clean": "rimraf \"**/node_modules\" \"**/dist\" \"**/.next\"",
+    "lint": "yarn workspace front lint && yarn workspace back lint",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "test": "yarn workspace front test && yarn workspace back test"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5"
+  }
+}
