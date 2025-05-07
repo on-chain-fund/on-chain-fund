@@ -1,5 +1,5 @@
 import { Campaign, Contribution } from '../types/campaign';
-import { getContractCampaigns, getContractCampaign, CONTRACT_ADDRESS, CONTRACT_ABI } from './contract';
+import { getContractCampaigns, getContractCampaign, CONTRACT_ADDRESS_MAINNET, CONTRACT_ABI } from './contract';
 import { useWriteContract } from 'wagmi';
 
 // Get all campaigns
@@ -48,7 +48,7 @@ export function useCreateCampaign() {
   
   const createCampaign = async (campaign: Omit<Campaign, 'status' | 'id' | 'raised'>) => {
     writeContract({
-      address: CONTRACT_ADDRESS,
+      address: CONTRACT_ADDRESS_MAINNET,
       abi: CONTRACT_ABI,
       functionName: 'createCampaign',
       args: [
@@ -74,7 +74,7 @@ export function useFundCampaign() {
   
   const fundCampaign = async (campaignId: string, amount: number) => {
     writeContract({
-      address: CONTRACT_ADDRESS,
+      address: CONTRACT_ADDRESS_MAINNET,
       abi: CONTRACT_ABI,
       functionName: 'contribute',
       args: [
