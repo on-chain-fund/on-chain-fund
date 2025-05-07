@@ -1,6 +1,6 @@
 import { Campaign } from '../types/campaign';
 import { createPublicClient, http, parseAbi } from 'viem';
-import { baseSepolia } from 'viem/chains';
+import { base } from 'viem/chains';
 
 // TODO: bring this info directly from under the contract folder
 export const CONTRACT_ABI = parseAbi([
@@ -11,11 +11,14 @@ export const CONTRACT_ABI = parseAbi([
 ]);
 
 // Contract address on Base Sepolia
-export const CONTRACT_ADDRESS = '0xd09a5362077B352c31e6283ae63c572BC101767d';
+export const CONTRACT_ADDRESS_TESTNET = '0xd09a5362077B352c31e6283ae63c572BC101767d';
+
+// Contract address on Base Mainnet
+export const CONTRACT_ADDRESS_MAINNET = '0xc8eba12ad97e78244274150cef163fb54e84b042';
 
 // Create a public client for read operations
 const client = createPublicClient({
-  chain: baseSepolia,
+  chain: base,
   transport: http()
 });
 
@@ -51,7 +54,7 @@ function convertContractCampaignToFrontend(
 // Function to get all campaigns
 export async function getContractCampaigns(): Promise<Campaign[]> {
   const count = await client.readContract({
-    address: CONTRACT_ADDRESS,
+    address: CONTRACT_ADDRESS_MAINNET,
     abi: CONTRACT_ABI,
     functionName: 'campaignCount',
   });
@@ -59,7 +62,7 @@ export async function getContractCampaigns(): Promise<Campaign[]> {
   const campaigns: Campaign[] = [];
   for (let i = 0; i < Number(count); i++) {
     const campaignData = await client.readContract({
-      address: CONTRACT_ADDRESS,
+      address: CONTRACT_ADDRESS_MAINNET,
       abi: CONTRACT_ABI,
       functionName: 'getCampaign',
       args: [BigInt(i)],
@@ -75,7 +78,7 @@ export async function getContractCampaigns(): Promise<Campaign[]> {
 export async function getContractCampaign(id: string): Promise<Campaign | null> {
   try {
     const campaignData = await client.readContract({
-      address: CONTRACT_ADDRESS,
+      address: CONTRACT_ADDRESS_MAINNET,
       abi: CONTRACT_ABI,
       functionName: 'getCampaign',
       args: [BigInt(id)],

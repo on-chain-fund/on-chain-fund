@@ -6,8 +6,8 @@ import {OnChainFund} from "../src/OnChainFund.sol";
 
 contract Deploy is Script {
     function run() external returns (OnChainFund) {
-        // Base Sepolia USDC address
-        address usdc = 0x036CbD53842c5426634e7929541eC2318f3dCF7e;
+        // Base Mainnet USDC address
+        address usdc = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913;
         
         vm.startBroadcast();
         OnChainFund fund = new OnChainFund(usdc);
