@@ -1,23 +1,12 @@
 'use client';
-import { Avatar, Name } from '@coinbase/onchainkit/identity';
-import { Wallet, ConnectWallet, WalletDropdown } from '@coinbase/onchainkit/wallet';
-import { Header } from '../components/Header';
 
 export default function HowItWorks() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-black">How BaseFunder Works</h1>
-          <Wallet>
-            <ConnectWallet>
-              <Avatar className="h-6 w-6" />
-              <Name />
-            </ConnectWallet>
-            <WalletDropdown />
-          </Wallet>
         </div>
         
         <div className="bg-white rounded-lg shadow-md p-8">

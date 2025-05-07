@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import { Campaign } from '../types/campaign';
 import { useCreateCampaign } from '../utils/api';
-import { Header } from '../components/Header';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 const CATEGORIES = [
   'Art',
@@ -121,7 +120,6 @@ export default function CreateCampaign() {
   if (!isConnected) {
     return (
       <div>
-        <Header />
         <div className="flex justify-center items-center min-h-[60vh]">
           <LoadingSpinner />
         </div>
@@ -130,7 +128,6 @@ export default function CreateCampaign() {
   }
   return (
     <div>
-      <Header />
       <div className="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow overflow-hidden rounded-lg">
           <div className="px-4 py-5 sm:px-6 bg-gray-50">

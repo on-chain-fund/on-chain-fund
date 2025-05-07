@@ -2,7 +2,9 @@
 import React from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
-import { FundButton } from '@coinbase/onchainkit/fund';
+import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownFundLink, WalletDropdownDisconnect } from '@coinbase/onchainkit/wallet';
+import { Avatar, Name, Address, EthBalance, Identity } from '@coinbase/onchainkit/identity';
+import { color } from '@coinbase/onchainkit/theme';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,8 +28,23 @@ export default function Header() {
               </Link>
             </nav>
           </div>
-          <div className="hidden sm:flex items-center">
-            <FundButton text="Fund Wallet" />
+          <div className="hidden sm:flex items-center space-x-4">
+            <Wallet>
+              <ConnectWallet>
+                <Avatar className="h-6 w-6" />
+                <Name />
+              </ConnectWallet>
+              <WalletDropdown>
+                <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
+                  <Avatar />
+                  <Name />
+                  <Address className={color.foregroundMuted} />
+                  <EthBalance />
+                </Identity>
+                <WalletDropdownFundLink />
+                <WalletDropdownDisconnect />
+              </WalletDropdown>
+            </Wallet>
           </div>
           <div className="flex items-center sm:hidden">
             <button
@@ -72,8 +89,23 @@ export default function Header() {
           <Link href="/how-it-works" className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-black">
             How It Works
           </Link>
-          <div className="pl-3 pr-4 py-2">
-            <FundButton text="Fund Wallet" />
+          <div className="pl-3 pr-4 py-2 space-y-2">
+            <Wallet>
+              <ConnectWallet>
+                <Avatar className="h-6 w-6" />
+                <Name />
+              </ConnectWallet>
+              <WalletDropdown>
+                <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
+                  <Avatar />
+                  <Name />
+                  <Address className={color.foregroundMuted} />
+                  <EthBalance />
+                </Identity>
+                <WalletDropdownFundLink />
+                <WalletDropdownDisconnect />
+              </WalletDropdown>
+            </Wallet>
           </div>
         </div>
       </div>
