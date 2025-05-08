@@ -1,6 +1,6 @@
 'use client';
 
-export default function HowItWorks() {
+function HowItWorks() {
   return (
     <div className="min-h-screen bg-gray-50">
       
@@ -94,3 +94,6 @@ export default function HowItWorks() {
     </div>
   );
 }
+
+
+export default HowItWorks

@@ -14,6 +14,8 @@
 /* Override OnChainKit button styles */
 [data-testid="ockConnectButton"] {
   background-color: #4f46e5 !important;
+  --ock-text-inverse: #ffffff;
+
 }
 
 [data-testid="ockConnectButton"]:hover {
