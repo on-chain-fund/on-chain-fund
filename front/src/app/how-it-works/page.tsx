@@ -4,21 +4,21 @@ function HowItWorks() {
   return (
     <div className="min-h-screen bg-gray-50">
       
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-black">How BaseFunder Works</h1>
         </div>
         
         <div className="bg-white rounded-lg shadow-md p-8">
           <div className="prose max-w-none text-black">
-            <h2>Decentralized Crowdfunding on Base</h2>
+            <h1 className="text-2xl font-bold">Decentralized Crowdfunding on Base</h1>
             <p>
               BaseFunder is a decentralized crowdfunding platform built on the Base blockchain. 
               It allows creators to raise funds for their projects directly from the community, 
               with all transactions happening on-chain for maximum transparency and security.
             </p>
-            
-            <h3>For Creators</h3>
+            <br/>
+            <h1 className="text-2xl font-bold">For Creators</h1>
             <ol>
               <li>
                 <strong>Create a Campaign</strong> - Set up your project with a funding goal, 
@@ -34,8 +34,8 @@ function HowItWorks() {
                 are automatically refunded to the funders.
               </li>
             </ol>
-            
-            <h3>For Funders</h3>
+            <br/>
+            <h1 className="text-2xl font-bold">For Funders</h1>
             <ol>
               <li>
                 <strong>Browse Campaigns</strong> - Explore campaigns across different categories 
@@ -50,8 +50,8 @@ function HowItWorks() {
                 the deadline, your contribution is automatically refunded to your wallet.
               </li>
             </ol>
-            
-            <h3>Key Features</h3>
+            <br/>
+            <h2 className="text-xl font-bold">Key Features</h2>
             <ul>
               <li>
                 <strong>Smart Wallet Integration</strong> - Use Coinbase's Smart Wallet for a seamless 
@@ -74,15 +74,15 @@ function HowItWorks() {
                 providing full transparency and security.
               </li>
             </ul>
-            
-            <h3>Smart Contract Security</h3>
+            <br/>
+            <h1 className="text-2xl font-bold">Smart Contract Security</h1>
             <p>
               Our platform is built on secure, audited smart contracts that handle the escrow of funds 
               and automatic distribution based on campaign outcomes. The code is open-source and 
               verifiable on the blockchain.
             </p>
             
-            <h3>Getting Started</h3>
+            <h2 className="text-xl font-bold">Getting Started</h2>
             <p>
               Ready to start? Connect your wallet using the button in the top right corner, or create 
               a new Smart Wallet directly through our platform. Once connected, you can create a campaign 

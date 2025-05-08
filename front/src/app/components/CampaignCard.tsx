@@ -6,7 +6,7 @@ import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress } fro
 interface CampaignCardProps {
   campaign: Campaign;
 }
-export function CampaignCard({ campaign }: CampaignCardProps) {
+function CampaignCard({ campaign }: CampaignCardProps) {
   const progress = calculateProgress(campaign.raised, campaign.goal);
   const timeLeft = calculateTimeLeft(campaign.endDate);
   
@@ -63,3 +63,5 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
     </Link>
   );
 }
+
+export default CampaignCard
