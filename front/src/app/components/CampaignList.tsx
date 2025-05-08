@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Campaign } from '../types/campaign';
 import { getCampaigns, getUserCampaigns } from '../utils/api';
-import { CampaignCard } from './CampaignCard';
+import CampaignCard  from './CampaignCard';
 import { LoadingSpinner } from './LoadingSpinner';
 
 type FilterType = 'all' | 'active' | 'funded' | 'my-campaigns';
@@ -105,7 +105,7 @@ export function CampaignList() {
           My Campaigns
         </button>
       </div>
-      {/* {isLoading ? (
+      {isLoading ? (
         <LoadingSpinner />
       ) : filteredCampaigns.length === 0 ? (
         <div className="text-center py-10">
@@ -117,7 +117,7 @@ export function CampaignList() {
             <CampaignCard key={campaign.id} campaign={campaign} />
           ))}
         </div>
-      )} */}
+      )}
     </div>
   );
 }
