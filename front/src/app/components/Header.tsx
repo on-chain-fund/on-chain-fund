@@ -2,12 +2,24 @@
 import React from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownFundLink, WalletDropdownDisconnect } from '@coinbase/onchainkit/wallet';
 import { Avatar, Name, Address, EthBalance, Identity } from '@coinbase/onchainkit/identity';
 import { color } from '@coinbase/onchainkit/theme';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (path: string) => {
+    // For root path, we need exact match
+    if (path === '/') {
+      return pathname === path;
+    }
+    // For other paths, check if the pathname starts with the path
+    return pathname.startsWith(path);
+  };
+
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,13 +29,34 @@ export default function Header() {
               <span className="text-2xl font-bold text-blue-600">OnChainFund</span>
             </Link>
             <nav className="hidden md:ml-6 md:flex md:space-x-8">
-              <Link href="/" className="inline-flex items-center px-1 pt-1 border-b-2 border-blue-500 text-sm font-medium text-black">
+              <Link 
+                href="/" 
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                  isActive('/') 
+                    ? 'border-blue-500 text-black' 
+                    : 'border-transparent text-gray-500 hover:text-black hover:border-gray-300'
+                }`}
+              >
                 Home
               </Link>
-              <Link href="/explore" className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-black hover:border-gray-300">
+              <Link 
+                href="/explore" 
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                  isActive('/explore') 
+                    ? 'border-blue-500 text-black' 
+                    : 'border-transparent text-gray-500 hover:text-black hover:border-gray-300'
+                }`}
+              >
                 Explore
               </Link>
-              <Link href="/how-it-works" className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-black hover:border-gray-300">
+              <Link 
+                href="/how-it-works" 
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                  isActive('/how-it-works') 
+                    ? 'border-blue-500 text-black' 
+                    : 'border-transparent text-gray-500 hover:text-black hover:border-gray-300'
+                }`}
+              >
                 How It Works
               </Link>
             </nav>
@@ -80,13 +113,34 @@ export default function Header() {
       </div>
       <div className={`${isMenuOpen ? 'block' : 'hidden'} sm:hidden`}>
         <div className="pt-2 pb-3 space-y-1">
-          <Link href="/" className="block pl-3 pr-4 py-2 border-l-4 border-blue-500 text-base font-medium text-blue-700 bg-blue-50">
+          <Link 
+            href="/" 
+            className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              isActive('/')
+                ? 'border-blue-500 text-blue-700 bg-blue-50'
+                : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-black'
+            }`}
+          >
             Home
           </Link>
-          <Link href="/explore" className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-black">
+          <Link 
+            href="/explore" 
+            className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              isActive('/explore')
+                ? 'border-blue-500 text-blue-700 bg-blue-50'
+                : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-black'
+            }`}
+          >
             Explore
           </Link>
-          <Link href="/how-it-works" className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-black">
+          <Link 
+            href="/how-it-works" 
+            className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              isActive('/how-it-works')
+                ? 'border-blue-500 text-blue-700 bg-blue-50'
+                : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-black'
+            }`}
+          >
             How It Works
           </Link>
           <div className="pl-3 pr-4 py-2 space-y-2">
