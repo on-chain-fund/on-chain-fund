@@ -6,14 +6,14 @@ function HowItWorks() {
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-black">How BaseFunder Works</h1>
+          <h1 className="text-3xl font-bold text-black">How OnChainFund Works</h1>
         </div>
         
         <div className="bg-white rounded-lg shadow-md p-8">
           <div className="prose max-w-none text-black">
             <h1 className="text-2xl font-bold">Decentralized Crowdfunding on Base</h1>
             <p>
-              BaseFunder is a decentralized crowdfunding platform built on the Base blockchain. 
+            OnChainFund is a decentralized crowdfunding platform built on the Base blockchain. 
               It allows creators to raise funds for their projects directly from the community, 
               with all transactions happening on-chain for maximum transparency and security.
             </p>
@@ -26,7 +26,7 @@ function HowItWorks() {
               </li>
               <li>
                 <strong>Share Your Campaign</strong> - Once created, share your campaign with 
-                your community and the wider BaseFunder audience.
+                your community and the wider OnChainFund audience.
               </li>
               <li>
                 <strong>Receive Funds</strong> - If your campaign reaches its funding goal before 

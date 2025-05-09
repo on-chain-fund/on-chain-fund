@@ -1,29 +1,23 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
-import { Avatar, Name } from '@coinbase/onchainkit/identity';
-import { Wallet, ConnectWallet, WalletDropdown } from '@coinbase/onchainkit/wallet';
-// import { getAllCampaigns } from '../services/campaignService';
-// import { calculateCampaignStatus } from '../utils/campaignUtils';
-// import { Campaign, CampaignWithStatus, CampaignStatus } from '../types/api';
+import { Campaign } from '../types/campaign';
+import { getCampaigns } from '../utils/api';
 import CampaignCard from '../components/CampaignCard';
-import Header from '../components/Header';
 
 function Explore() {
-  const { address } = useAccount();
-  const [campaigns, setCampaigns] = useState<CampaignWithStatus[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activeStatus, setActiveStatus] = useState<string>('All');
   const [sortBy, setSortBy] = useState<string>('newest');
   const [searchTerm, setSearchTerm] = useState<string>('');
+
   useEffect(() => {
     async function fetchCampaigns() {
       try {
         setIsLoading(true);
-        // const campaignsData = await getAllCampaigns();
-        const campaignsWithStatus = campaignsData.map(calculateCampaignStatus);
-        setCampaigns(campaignsWithStatus);
+        const campaignsData = await getCampaigns();
+        setCampaigns(campaignsData);
       } catch (error) {
         console.error('Failed to fetch campaigns:', error);
       } finally {
@@ -32,8 +26,9 @@ function Explore() {
     }
     fetchCampaigns();
   }, []);
+
   const categories = ['All', 'Education', 'Gaming', 'DeFi', 'Art', 'Social Impact'];
-  const statuses = ['All', 'Active', 'Successful', 'Failed'];
+  const statuses = ['All', 'Active', 'Funded', 'Expired'];
   const sortOptions = [
     { value: 'newest', label: 'Newest' },
     { value: 'oldest', label: 'Oldest' },
@@ -41,6 +36,7 @@ function Explore() {
     { value: 'least-funded', label: 'Least Funded' },
     { value: 'ending-soon', label: 'Ending Soon' },
   ];
+
   // Filter campaigns based on category, status, and search term
   let filteredCampaigns = campaigns;
   
@@ -49,12 +45,7 @@ function Explore() {
   }
   
   if (activeStatus !== 'All') {
-    const statusMap: Record<string, CampaignStatus> = {
-      'Active': CampaignStatus.ACTIVE,
-      'Successful': CampaignStatus.SUCCESSFUL,
-      'Failed': CampaignStatus.FAILED
-    };
-    filteredCampaigns = filteredCampaigns.filter(campaign => campaign.status === statusMap[activeStatus]);
+    filteredCampaigns = filteredCampaigns.filter(campaign => campaign.status === activeStatus.toLowerCase());
   }
   
   if (searchTerm) {
@@ -62,7 +53,7 @@ function Explore() {
     filteredCampaigns = filteredCampaigns.filter(campaign => 
       campaign.title.toLowerCase().includes(term) || 
       campaign.description.toLowerCase().includes(term) ||
-      campaign.creatorName?.toLowerCase().includes(term)
+      campaign.creator.toLowerCase().includes(term)
     );
   }
   
@@ -70,19 +61,20 @@ function Explore() {
   filteredCampaigns = [...filteredCampaigns].sort((a, b) => {
     switch (sortBy) {
       case 'newest':
-        return b.id.localeCompare(a.id); // Assuming id is sequential
+        return b.id.localeCompare(a.id);
       case 'oldest':
         return a.id.localeCompare(b.id);
       case 'most-funded':
-        return parseFloat(b.currentAmount) - parseFloat(a.currentAmount);
+        return b.raised - a.raised;
       case 'least-funded':
-        return parseFloat(a.currentAmount) - parseFloat(b.currentAmount);
+        return a.raised - b.raised;
       case 'ending-soon':
-        return a.deadline - b.deadline;
+        return a.endDate.getTime() - b.endDate.getTime();
       default:
         return 0;
     }
   });
+
   return (
     <main className="min-h-screen bg-gray-50">     
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">

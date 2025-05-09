@@ -14,7 +14,7 @@ export default function Header() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-blue-600">BaseFunder</span>
+              <span className="text-2xl font-bold text-blue-600">OnChainFund</span>
             </Link>
             <nav className="hidden md:ml-6 md:flex md:space-x-8">
               <Link href="/" className="inline-flex items-center px-1 pt-1 border-b-2 border-blue-500 text-sm font-medium text-black">
