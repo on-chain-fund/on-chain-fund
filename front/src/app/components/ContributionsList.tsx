@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Contribution } from '../types/campaign';
-import { getContributions } from '../utils/api';
+import { getContributions } from '../types/api';
 import { formatAddress, formatAmount, formatDate } from '../utils/format';
 import { LoadingSpinner } from './LoadingSpinner';
 interface ContributionsListProps {

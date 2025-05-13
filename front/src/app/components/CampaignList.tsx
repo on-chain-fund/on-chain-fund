@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Campaign } from '../types/campaign';
-import { getCampaigns, getUserCampaigns } from '../utils/api';
+import { getCampaigns, getUserCampaigns } from '../types/api';
 import CampaignCard  from './CampaignCard';
 import { LoadingSpinner } from './LoadingSpinner';
 

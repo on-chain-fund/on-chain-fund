@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
-import { useCreateCampaign } from '../utils/api';
+import { useCreateCampaign } from '../types/api';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 const categories = [
   'Technology',

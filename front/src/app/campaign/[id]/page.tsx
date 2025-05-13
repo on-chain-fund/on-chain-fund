@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAccount } from 'wagmi';
-import { getCampaign } from '../../utils/api';
+import { getCampaign } from '../../types/api';
 import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress, formatDate } from '../../utils/format';
 import { ContributionsList } from '../../components/ContributionsList';
 import { FundingModal } from '../../components/FundingModal';

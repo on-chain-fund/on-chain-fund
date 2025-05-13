@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Buy } from '@coinbase/onchainkit/buy';
-import { useFundCampaign } from '../utils/api';
+import { useFundCampaign } from '../types/api';
 import { formatAmount } from '../utils/format';
 interface FundingModalProps {
   campaignId: string;

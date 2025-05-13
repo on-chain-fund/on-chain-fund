@@ -1,5 +1,5 @@
-import { Campaign, Contribution } from '../types/campaign';
-import { getContractCampaigns, getContractCampaign, CONTRACT_ADDRESS_MAINNET, CONTRACT_ABI } from './contract';
+import { Campaign, Contribution } from './campaign';
+import { getContractCampaigns, getContractCampaign, CONTRACT_ADDRESS_MAINNET, CONTRACT_ABI } from '../utils/contract';
 import { useWriteContract } from 'wagmi';
 
 // Get all campaigns
@@ -103,4 +103,47 @@ export async function getUserCampaigns(userAddress: string): Promise<Campaign[]>
 export async function getUserContributions(): Promise<Contribution[]> {
   // TODO: Implement when contract has a way to get user contributions
   return [];
+}
+
+export type APIError = {
+  code: string;
+  error: string;
+  message: string;
+};
+export function isApiError(response: unknown): response is APIError {
+  return (
+    response !== null && 
+    typeof response === 'object' && 
+    'error' in response
+  );
+}
+export interface Campaign {
+  id: string;
+  title: string;
+  description: string;
+  creatorAddress: string;
+  creatorName: string;
+  goalAmount: string;
+  currentAmount: string;
+  deadline: number; // Unix timestamp
+  imageUrl: string;
+  category: string;
+  isActive: boolean;
+}
+export interface Contribution {
+  id: string;
+  campaignId: string;
+  funderAddress: string;
+  amount: string;
+  timestamp: number;
+}
+export enum CampaignStatus {
+  ACTIVE = "ACTIVE",
+  SUCCESSFUL = "SUCCESSFUL",
+  FAILED = "FAILED"
+}
+export interface CampaignWithStatus extends Campaign {
+  status: CampaignStatus;
+  percentageFunded: number;
+  daysLeft: number;
 }

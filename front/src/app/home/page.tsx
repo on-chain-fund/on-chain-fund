@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Campaign } from '../types/campaign';
-import { getCampaigns } from '../utils/api';
+import { getCampaigns } from '../types/api';
 import CampaignCard from '../components/CampaignCard';
 
 function Explore() {
