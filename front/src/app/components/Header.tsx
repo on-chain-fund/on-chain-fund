@@ -30,9 +30,9 @@ export default function Header() {
             </Link>
             <nav className="hidden md:ml-6 md:flex md:space-x-8">
               <Link 
-                href="/" 
+                href="/home" 
                 className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  isActive('/') 
+                  isActive('/home') 
                     ? 'border-blue-500 text-black' 
                     : 'border-transparent text-gray-500 hover:text-black hover:border-gray-300'
                 }`}
@@ -40,14 +40,14 @@ export default function Header() {
                 Home
               </Link>
               <Link 
-                href="/explore" 
+                href="/portfolio" 
                 className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  isActive('/explore') 
+                  isActive('/portfolio') 
                     ? 'border-blue-500 text-black' 
                     : 'border-transparent text-gray-500 hover:text-black hover:border-gray-300'
                 }`}
               >
-                Explore
+                Portfolio
               </Link>
               <Link 
                 href="/how-it-works" 

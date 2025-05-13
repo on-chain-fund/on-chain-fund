@@ -1,6 +1,6 @@
 'use client';
-import { CampaignList } from './components/CampaignList';
-import CreateCampaignButton from './components/CreateCampaignButton';
+import { CampaignList } from '../components/CampaignList';
+import CreateCampaignButton from '../components/CreateCampaignButton';
 export default function Home() {
   return (
     <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
