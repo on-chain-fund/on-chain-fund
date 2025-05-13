@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Campaign } from '../types/campaign';
+import { Campaign, CampaignStatus } from '../types/campaign';
 import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress } from '../utils/format';
 interface CampaignCardProps {
   campaign: Campaign;
@@ -22,11 +22,11 @@ function CampaignCard({ campaign }: CampaignCardProps) {
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
             <span className={`text-xs font-semibold px-2 py-1 rounded-full text-white ${
-              campaign.status === 'active' ? 'bg-green-500' : 
-              campaign.status === 'funded' ? 'bg-blue-500' : 'bg-gray-500'
+              campaign.status === CampaignStatus.ACTIVE ? 'bg-green-500' : 
+              campaign.status === CampaignStatus.FUNDED ? 'bg-blue-500' : 'bg-gray-500'
             }`}>
-              {campaign.status === 'active' ? 'Active' : 
-               campaign.status === 'funded' ? 'Funded' : 'Expired'}
+              {campaign.status === CampaignStatus.ACTIVE ? 'Active' : 
+               campaign.status === CampaignStatus.FUNDED ? 'Funded' : 'Expired'}
             </span>
           </div>
         </div>
@@ -43,7 +43,7 @@ function CampaignCard({ campaign }: CampaignCardProps) {
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
                 className={`h-2 rounded-full ${
-                  campaign.status === 'funded' ? 'bg-blue-500' : 'bg-green-500'
+                  campaign.status === CampaignStatus.FUNDED ? 'bg-blue-500' : 'bg-green-500'
                 }`}
                 style={{ width: `${progress}%` }}
               ></div>
@@ -53,7 +53,7 @@ function CampaignCard({ campaign }: CampaignCardProps) {
           <div className="flex justify-between items-center text-sm">
             <span className="text-gray-500">{formatAmount(campaign.goal)} goal</span>
             <span className={`font-medium ${
-              campaign.status === 'expired' ? 'text-red-500' : 'text-gray-500'
+              campaign.status === CampaignStatus.EXPIRED ? 'text-red-500' : 'text-gray-500'
             }`}>
               {timeLeft}
             </span>

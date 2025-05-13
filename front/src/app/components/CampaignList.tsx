@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import { Campaign } from '../types/campaign';
+import { Campaign, CampaignStatus } from '../types/campaign';
 import { getCampaigns, getUserCampaigns } from '../types/api';
 import CampaignCard  from './CampaignCard';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -41,11 +41,11 @@ export function CampaignList() {
           let filtered = [...campaigns];
           
           if (filter === 'funded (no action)') {
-            filtered = filtered.filter(c => c.status === 'funded (no action)');
+            filtered = filtered.filter(c => c.status === CampaignStatus.FUNDED_NO_ACTION);
           } else if (filter === 'funded (needs action)') {
-            filtered = filtered.filter(c => c.status === 'funded (needs action)');
+            filtered = filtered.filter(c => c.status === CampaignStatus.FUNDED_NEEDS_ACTION);
           } else if (filter === 'funding in progress') {
-            filtered = filtered.filter(c => c.status === 'funding in progress');
+            filtered = filtered.filter(c => c.status === CampaignStatus.FUNDING_IN_PROGRESS);
           }
           
           setFilteredCampaigns(filtered);

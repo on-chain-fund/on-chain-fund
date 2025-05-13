@@ -117,33 +117,3 @@ export function isApiError(response: unknown): response is APIError {
     'error' in response
   );
 }
-export interface Campaign {
-  id: string;
-  title: string;
-  description: string;
-  creatorAddress: string;
-  creatorName: string;
-  goalAmount: string;
-  currentAmount: string;
-  deadline: number; // Unix timestamp
-  imageUrl: string;
-  category: string;
-  isActive: boolean;
-}
-export interface Contribution {
-  id: string;
-  campaignId: string;
-  funderAddress: string;
-  amount: string;
-  timestamp: number;
-}
-export enum CampaignStatus {
-  ACTIVE = "ACTIVE",
-  SUCCESSFUL = "SUCCESSFUL",
-  FAILED = "FAILED"
-}
-export interface CampaignWithStatus extends Campaign {
-  status: CampaignStatus;
-  percentageFunded: number;
-  daysLeft: number;
-}

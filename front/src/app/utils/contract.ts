@@ -1,4 +1,4 @@
-import { Campaign } from '../types/campaign';
+import { Campaign, CampaignStatus } from '../types/campaign';
 import { createPublicClient, http, parseAbi } from 'viem';
 import { base } from 'viem/chains';
 
@@ -30,11 +30,11 @@ function convertContractCampaignToFrontend(
   const [creator, goal, deadline, raised, finalized, milestoneDescription, milestoneApproved] = contractData;
   
   // Calculate status based on contract data
-  let status: 'active' | 'funded' | 'expired' = 'active';
+  let status: CampaignStatus = CampaignStatus.ACTIVE;
   if (finalized) {
-    status = milestoneApproved ? 'funded' : 'expired';
+    status = milestoneApproved ? CampaignStatus.FUNDED : CampaignStatus.EXPIRED;
   } else if (BigInt(Math.floor(Date.now() / 1000)) > deadline) {
-    status = 'expired';
+    status = CampaignStatus.EXPIRED;
   }
 
   return {

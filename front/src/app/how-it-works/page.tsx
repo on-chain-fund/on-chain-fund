@@ -46,7 +46,7 @@ function HowItWorks() {
                 use your existing crypto wallet or purchase ETH directly through our platform.
               </li>
               <li>
-                <strong>Get Refunds Automatically</strong> - If a campaign doesn't reach its goal by 
+                <strong>Get Refunds Automatically</strong> - If a campaign doesn&apos;t reach its goal by 
                 the deadline, your contribution is automatically refunded to your wallet.
               </li>
             </ol>
@@ -54,8 +54,8 @@ function HowItWorks() {
             <h2 className="text-xl font-bold">Key Features</h2>
             <ul>
               <li>
-                <strong>Smart Wallet Integration</strong> - Use Coinbase's Smart Wallet for a seamless 
-                experience, even if you're new to crypto.
+                <strong>Smart Wallet Integration</strong> - Use Coinbase&apos;s Smart Wallet for a seamless 
+                experience, even if you&apos;re new to crypto.
               </li>
               <li>
                 <strong>Fiat Onramp</strong> - Purchase ETH directly with your credit card or bank account 

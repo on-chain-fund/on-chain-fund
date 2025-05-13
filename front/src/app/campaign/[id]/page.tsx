@@ -8,7 +8,7 @@ import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress, form
 import { ContributionsList } from '../../components/ContributionsList';
 import { FundingModal } from '../../components/FundingModal';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { Campaign } from '../../types/campaign';
+import { Campaign, CampaignStatus } from '../../types/campaign';
 export default function CampaignDetail() {
   const params = useParams();
   const router = useRouter();
@@ -59,9 +59,9 @@ export default function CampaignDetail() {
   }
   const progress = calculateProgress(campaign.raised, campaign.goal);
   const timeLeft = calculateTimeLeft(campaign.endDate);
-  const isActive = campaign.status === 'active';
-  const isFunded = campaign.status === 'funded';
-  const isExpired = campaign.status === 'expired';
+  const isActive = campaign.status === CampaignStatus.ACTIVE;
+  const isFunded = campaign.status === CampaignStatus.FUNDED;
+  const isExpired = campaign.status === CampaignStatus.EXPIRED;
   const isCreator = address && address.toLowerCase() === campaign.creator.toLowerCase();
   return (
     <div className="max-w-4xl mx-auto">
