@@ -6,7 +6,7 @@ import { getCampaigns, getUserCampaigns } from '../utils/api';
 import CampaignCard  from './CampaignCard';
 import { LoadingSpinner } from './LoadingSpinner';
 
-type FilterType = 'all' | 'active' | 'funded' | 'my-campaigns';
+type FilterType = 'all' | 'funded (no action)' | 'funded (needs action)' | 'funding in progress' | 'my-campaigns';
 
 export function CampaignList() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -40,10 +40,12 @@ export function CampaignList() {
         } else {
           let filtered = [...campaigns];
           
-          if (filter === 'active') {
-            filtered = filtered.filter(c => c.status === 'active');
-          } else if (filter === 'funded') {
-            filtered = filtered.filter(c => c.status === 'funded');
+          if (filter === 'funded (no action)') {
+            filtered = filtered.filter(c => c.status === 'funded (no action)');
+          } else if (filter === 'funded (needs action)') {
+            filtered = filtered.filter(c => c.status === 'funded (needs action)');
+          } else if (filter === 'funding in progress') {
+            filtered = filtered.filter(c => c.status === 'funding in progress');
           }
           
           setFilteredCampaigns(filtered);
@@ -72,24 +74,34 @@ export function CampaignList() {
           All Campaigns
         </button>
         <button
-          onClick={() => setFilter('active')}
+          onClick={() => setFilter('funded (no action)')}
           className={`px-6 py-4 rounded-md text-sm font-medium ${
-            filter === 'active' 
+            filter === 'funded (no action)' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
-          Active
+          Funded (No Action)
         </button>
         <button
-          onClick={() => setFilter('funded')}
+          onClick={() => setFilter('funded (needs action)')}
           className={`px-6 py-4 rounded-md text-sm font-medium ${
-            filter === 'funded' 
+            filter === 'funded (needs action)' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
-          Funded
+          Funded (Needs Action)
+        </button>
+        <button
+          onClick={() => setFilter('funding in progress')}
+          className={`px-6 py-4 rounded-md text-sm font-medium ${
+            filter === 'funding in progress' 
+              ? 'bg-blue-600 text-white' 
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+        >
+         Funding (In Progress)
         </button>
         <button
           onClick={() => setFilter('my-campaigns')}

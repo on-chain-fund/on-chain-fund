@@ -8,7 +8,7 @@ export interface Campaign {
     creator: string;
     endDate: Date;
     category: string;
-    status: 'active' | 'funded' | 'expired';
+    status: 'active' | 'funded' | 'expired' | 'funded (no action)' | 'funded (needs action)' | 'funding in progress';
   }
   export interface Contribution {
     id: string;

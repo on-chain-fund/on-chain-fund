@@ -6,9 +6,9 @@ export default function Home() {
     <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
       <div className="flex justify-between py-6">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Discover Campaigns</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Your Portfolio</h1>
           <p className="text-gray-600">
-            Fund innovative projects on the blockchain with OnChainFund
+            Projects you have supported on OnChainFund
           </p>
         </div>
         <CreateCampaignButton/>
