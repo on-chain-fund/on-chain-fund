@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { useAccount } from 'wagmi';
 import { getCampaign } from '../../types/api';
 import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress, formatDate } from '../../utils/format';
@@ -9,7 +8,7 @@ import { ContributionsList } from '../../components/ContributionsList';
 import { FundingModal } from '../../components/FundingModal';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Campaign, CampaignStatus } from '../../types/campaign';
-import { Avatar, Name, Address } from '@coinbase/onchainkit/identity';
+import { Avatar, Address } from '@coinbase/onchainkit/identity';
 
 
 export default function CampaignDetail() {
