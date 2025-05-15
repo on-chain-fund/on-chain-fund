@@ -47,14 +47,22 @@ export function useCreateCampaign() {
   const { writeContract, isPending, isSuccess, isError, reset } = useWriteContract();
   
   const createCampaign = async (campaign: Omit<Campaign, 'status' | 'id' | 'raised'>) => {
+    // Calculate duration in seconds from now until end date
+    const duration = Math.floor((campaign.endDate.getTime() - Date.now()) / 1000);
+
+    // Convert goal amount to USDC decimals (6)
+    const goalAmount = BigInt(Math.floor(campaign.goal * 10**6));
+
     writeContract({
       address: CONTRACT_ADDRESS_MAINNET,
       abi: CONTRACT_ABI,
       functionName: 'createCampaign',
       args: [
-        BigInt(campaign.goal * 1e6), // Convert to USDC decimals
-        BigInt(Math.floor((campaign.endDate.getTime() - Date.now()) / 1000)), // Duration in seconds
-        campaign.description
+        campaign.title,
+        campaign.description,
+        goalAmount,
+        BigInt(duration),
+        campaign.category
       ]
     });
   };

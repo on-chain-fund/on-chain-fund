@@ -69,7 +69,11 @@ export default function CreateCampaign() {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'goal' ? Number(value) : value,
+      [name]: name === 'goal' 
+        ? Number(value) 
+        : name === 'endDate'
+          ? new Date(value)
+          : value,
     }));
   };
   const handleSubmit = async (e: React.FormEvent) => {

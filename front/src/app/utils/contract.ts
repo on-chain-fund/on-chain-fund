@@ -4,17 +4,21 @@ import { base } from 'viem/chains';
 
 // TODO: bring this info directly from under the contract folder
 export const CONTRACT_ABI = parseAbi([
-  'function createCampaign(uint256 _goal, uint256 _duration, string _milestoneDescription)',
+  'function createCampaign(string _title, string _description, uint256 _goalAmount, uint256 _duration, string _category)',
   'function contribute(uint256 _campaignId, uint256 _amount)',
-  'function getCampaign(uint256 _campaignId) view returns (address creator, uint256 goal, uint256 deadline, uint256 raised, bool finalized, string milestoneDescription, bool milestoneApproved, uint256 totalVotes)',
-  'function campaignCount() view returns (uint256)'
+  'function submitResults(uint256 _campaignId)',
+  'function releaseFunds(uint256 _campaignId)',
+  'function refund(uint256 _campaignId)',
+  'function getCampaign(uint256 _campaignId) view returns (string title, string description, uint256 goalAmount, uint256 raisedAmount, address creator, uint256 deadline, string category, bool isCompleted, bool hasSubmittedResults)',
+  'function campaignCount() view returns (uint256)',
+  'function usdc() view returns (address)'
 ]);
 
 // Contract address on Base Sepolia
 export const CONTRACT_ADDRESS_TESTNET = '0xd09a5362077B352c31e6283ae63c572BC101767d';
 
 // Contract address on Base Mainnet
-export const CONTRACT_ADDRESS_MAINNET = '0xc8eba12ad97e78244274150cef163fb54e84b042';
+export const CONTRACT_ADDRESS_MAINNET = '0x0aD3d9F0Dc177d79834D22031246B2f3C00C611c';
 
 // Create a public client for read operations
 const client = createPublicClient({
@@ -25,28 +29,28 @@ const client = createPublicClient({
 // Helper function to convert campaign data from contract to our frontend format
 function convertContractCampaignToFrontend(
   id: number,
-  contractData: [string, bigint, bigint, bigint, boolean, string, boolean, bigint]
+  contractData: [string, string, bigint, bigint, string, bigint, string, boolean, boolean]
 ): Campaign {
-  const [creator, goal, deadline, raised, finalized, milestoneDescription, milestoneApproved] = contractData;
+  const [title, description, goalAmount, raisedAmount, creator, deadline, category, isCompleted, hasSubmittedResults] = contractData;
   
   // Calculate status based on contract data
   let status: CampaignStatus = CampaignStatus.ACTIVE;
-  if (finalized) {
-    status = milestoneApproved ? CampaignStatus.FUNDED : CampaignStatus.EXPIRED;
+  if (isCompleted) {
+    status = CampaignStatus.FUNDED;
   } else if (BigInt(Math.floor(Date.now() / 1000)) > deadline) {
     status = CampaignStatus.EXPIRED;
   }
 
   return {
     id: id.toString(),
-    title: milestoneDescription, // Using milestone description as title for now
-    description: milestoneDescription,
+    title,
+    description,
     imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7', // Default image
-    goal: Number(goal) / 1e6, // Convert from USDC decimals (6)
-    raised: Number(raised) / 1e6,
+    goal: Number(goalAmount) / 1e6, // Convert from USDC decimals (6)
+    raised: Number(raisedAmount) / 1e6,
     creator,
     endDate: new Date(Number(deadline) * 1000),
-    category: 'Technology', // Default category
+    category,
     status,
   };
 }
@@ -68,7 +72,7 @@ export async function getContractCampaigns(): Promise<Campaign[]> {
       args: [BigInt(i)],
     });
 
-    campaigns.push(convertContractCampaignToFrontend(i, campaignData as [string, bigint, bigint, bigint, boolean, string, boolean, bigint]));
+    campaigns.push(convertContractCampaignToFrontend(i, campaignData as [string, string, bigint, bigint, string, bigint, string, boolean, boolean]));
   }
 
   return campaigns;
@@ -84,7 +88,7 @@ export async function getContractCampaign(id: string): Promise<Campaign | null> 
       args: [BigInt(id)],
     });
 
-    return convertContractCampaignToFrontend(Number(id), campaignData as [string, bigint, bigint, bigint, boolean, string, boolean, bigint]);
+    return convertContractCampaignToFrontend(Number(id), campaignData as [string, string, bigint, bigint, string, bigint, string, boolean, boolean]);
   } catch (error) {
     console.error('Error fetching campaign:', error);
     return null;

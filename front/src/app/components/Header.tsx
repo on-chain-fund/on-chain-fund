@@ -3,9 +3,8 @@ import React from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownFundLink, WalletDropdownDisconnect } from '@coinbase/onchainkit/wallet';
-import { Avatar, Name, Address, EthBalance, Identity } from '@coinbase/onchainkit/identity';
-import { color } from '@coinbase/onchainkit/theme';
+import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownFundLink, WalletDropdownDisconnect, WalletAdvancedTokenHoldings, WalletAdvancedAddressDetails } from '@coinbase/onchainkit/wallet';
+import { Avatar, Name } from '@coinbase/onchainkit/identity';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -78,12 +77,8 @@ export default function Header() {
                 <Name />
               </ConnectWallet>
               <WalletDropdown>
-                <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-                  <Avatar />
-                  <Name />
-                  <Address className={color.foregroundMuted} />
-                  <EthBalance />
-                </Identity>
+                <WalletAdvancedAddressDetails />
+                <WalletAdvancedTokenHoldings />
                 <WalletDropdownFundLink />
                 <WalletDropdownDisconnect />
               </WalletDropdown>
@@ -160,12 +155,6 @@ export default function Header() {
                 <Name />
               </ConnectWallet>
               <WalletDropdown>
-                <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-                  <Avatar />
-                  <Name />
-                  <Address className={color.foregroundMuted} />
-                  <EthBalance />
-                </Identity>
                 <WalletDropdownFundLink />
                 <WalletDropdownDisconnect />
               </WalletDropdown>
