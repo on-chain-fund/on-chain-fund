@@ -4,6 +4,9 @@ import Image from 'next/image';
 import { Campaign } from '../types/campaign';
 import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress } from '../utils/format';
 import { GetAddressReturnType } from '@coinbase/onchainkit/identity';
+import { calculateCampaignStatus } from '../utils/campaignUtils';
+import { CampaignStatus } from '../types/campaign';
+
 interface CampaignCardProps {
   campaign: Campaign;
 }
@@ -13,8 +16,11 @@ function CampaignCard({ campaign }: CampaignCardProps) {
   const isActive = new Date() < campaign.deadline;
   const isFunded = new Date() >= campaign.deadline && campaign.raisedAmount >= campaign.goalAmount;
   const isFailed = new Date() >= campaign.deadline && campaign.raisedAmount < campaign.goalAmount;
+  const campaignStatus = calculateCampaignStatus(campaign);
+  const isWorkInProgress = campaignStatus.status === CampaignStatus.WORK_IN_PROGRESS;
+
   return (
-    <Link href={`/campaign/${campaign.id}`} className="block">
+    <Link href={isWorkInProgress ? `/campaign/${campaign.id}/vote` : `/campaign/${campaign.id}`} className="block">
       <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
         <div className="relative h-48">
           <Image 

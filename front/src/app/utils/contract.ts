@@ -26,8 +26,11 @@ export const CONTRACT_ADDRESS_MAINNET = '0x0AA77a866f3d7F61b294477c87cD41817CA5c
 // Create a public client for read operations
 const client = createPublicClient({
   chain: base,
-  transport: http()
+  transport: http('https://sepolia.base.org')
 });
+
+// Use testnet address for development
+const CONTRACT_ADDRESS = CONTRACT_ADDRESS_TESTNET;
 
 // Helper function to convert campaign data from contract to our frontend format
 function convertContractCampaignToFrontend(
@@ -53,40 +56,51 @@ function convertContractCampaignToFrontend(
 
 // Function to get all campaigns
 export async function getContractCampaigns(): Promise<Campaign[]> {
-  const count = await client.readContract({
-    address: CONTRACT_ADDRESS_MAINNET,
-    abi: CONTRACT_ABI,
-    functionName: 'campaignCount',
-  });
-
-  const campaigns: Campaign[] = [];
-  for (let i = 0; i < Number(count); i++) {
-    const campaignData = await client.readContract({
-      address: CONTRACT_ADDRESS_MAINNET,
+  try {
+    console.log('Fetching campaign count from contract:', CONTRACT_ADDRESS);
+    const count = await client.readContract({
+      address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
-      functionName: 'getCampaign',
-      args: [BigInt(i)],
+      functionName: 'campaignCount',
     });
+    console.log('Campaign count:', count);
 
-    campaigns.push(convertContractCampaignToFrontend(i, campaignData as readonly [string, string, bigint, bigint, `0x${string}`, bigint, string, boolean, boolean]));
+    const campaigns: Campaign[] = [];
+    for (let i = 0; i < Number(count); i++) {
+      console.log('Fetching campaign:', i);
+      const campaignData = await client.readContract({
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: 'getCampaign',
+        args: [BigInt(i)],
+      });
+
+      campaigns.push(convertContractCampaignToFrontend(i, campaignData as readonly [string, string, bigint, bigint, `0x${string}`, bigint, string, boolean, boolean]));
+    }
+
+    return campaigns;
+  } catch (error) {
+    console.error('Error in getContractCampaigns:', error);
+    // Return empty array instead of throwing to prevent UI from breaking
+    return [];
   }
-
-  return campaigns;
 }
 
 // Function to get a single campaign
 export async function getContractCampaign(id: string): Promise<Campaign | null> {
   try {
+    console.log('Fetching campaign:', id, 'from contract:', CONTRACT_ADDRESS);
     const campaignData = await client.readContract({
-      address: CONTRACT_ADDRESS_MAINNET,
+      address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
       functionName: 'getCampaign',
       args: [BigInt(id)],
     });
+    console.log('Campaign data:', campaignData);
 
     return convertContractCampaignToFrontend(Number(id), campaignData as readonly [string, string, bigint, bigint, `0x${string}`, bigint, string, boolean, boolean]);
   } catch (error) {
-    console.error('Error fetching campaign:', error);
+    console.error('Error in getContractCampaign:', error);
     return null;
   }
 }

@@ -26,7 +26,7 @@ export default function CampaignDetail() {
       try {
         const data = await getCampaign(campaignId);
         if (!data) {
-          router.push('/');
+          router.push('/home');
           return;
         }
         setCampaign(data);

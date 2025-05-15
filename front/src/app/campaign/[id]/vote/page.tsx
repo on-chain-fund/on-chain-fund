@@ -19,7 +19,49 @@ export default function CampaignDetail() {
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showFundingModal, setShowFundingModal] = useState(false);
+  const [selectedMilestone, setSelectedMilestone] = useState<1 | 2 | 3 | 4 | 5 | null>(null);
   const { address } = useAccount();
+
+  type MilestoneContent = {
+    title: string;
+    description: string;
+    status: "Completed" | "In Progress" | "Not Started" | "Voting";
+    details: string;
+  };
+
+  const milestoneContent: Record<1 | 2 | 3 | 4 | 5, MilestoneContent> = {
+    1: {
+      title: "Planning Phase",
+      description: "Initial project planning and requirements gathering",
+      status: "Completed",
+      details: "Project scope defined, requirements documented, and initial timeline established."
+    },
+    2: {
+      title: "Development Phase",
+      description: "Core development and implementation",
+      status: "Completed",
+      details: "Active development of core features and functionality."
+    },
+    3: {
+      title: "Testing Phase",
+      description: "Quality assurance and testing",
+      status: "Voting",
+      details: "Comprehensive testing of all features and functionality."
+    },
+    4: {
+      title: "Launch Phase",
+      description: "Final deployment and launch",
+      status: "Not Started",
+      details: "Final preparations and public release."
+    },
+    5: {
+      title: "Campaign Completed",
+      description: "Project successfully delivered",
+      status: "Not Started",
+      details: "All milestones completed and project delivered."
+    }
+  };
+
   useEffect(() => {
     async function loadCampaign() {
       setIsLoading(true);
@@ -124,7 +166,96 @@ export default function CampaignDetail() {
                                         <h1>Timeline</h1>
                                     </div>
                                     <div>
-
+                                        <div className="relative pt-1">
+                                            <div className="flex mb-2 items-center justify-between">
+                                                <div className="w-[calc(100%-30px)] h-10 flex items-center">
+                                                    <div className="relative h-2 bg-gray-200 rounded-full w-full">
+                                                        <div className="absolute h-2 bg-green-500 rounded-full" style={{ width: '25%' }}></div>
+                                                        <div className="absolute h-2 bg-blue-500 rounded-full" style={{ width: '50%', left: '25%' }}></div>
+                                                        <div className="absolute h-2 bg-gray-200 rounded-full" style={{ width: '25%', left: '50%' }}></div>
+                                                        <div className="absolute h-2 bg-gray-200 rounded-full" style={{ width: '25%', left: '75%' }}></div>
+                                                        
+                                                        <button 
+                                                            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-green-500 rounded-full shadow-md hover:bg-gray-50 transition-colors group" 
+                                                            style={{ left: '0%', top: '50%' }}
+                                                            onClick={() => setSelectedMilestone(1)}
+                                                        >
+                                                            <span className="text-xs">🚩</span>
+                                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity min-w-[120px] text-center z-10" style={{ marginLeft: '15px' }}>
+                                                                Milestone 1:<br/>Planning
+                                                            </div>
+                                                        </button>
+                                                        <button 
+                                                            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-green-500 rounded-full shadow-md hover:bg-gray-50 transition-colors group" 
+                                                            style={{ left: '25%', top: '50%' }}
+                                                            onClick={() => setSelectedMilestone(2)}
+                                                        >
+                                                            <span className="text-xs">🚩</span>
+                                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity min-w-[120px] text-center z-10">
+                                                                Milestone 2:<br/>Development
+                                                            </div>
+                                                        </button>
+                                                        <button 
+                                                            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-blue-500 rounded-full shadow-md hover:bg-gray-50 transition-colors group border-4 border-orange-500" 
+                                                            style={{ left: '50%', top: '50%' }}
+                                                            onClick={() => setSelectedMilestone(3)}
+                                                        >
+                                                            <span className="text-xs">🚩</span>
+                                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity min-w-[120px] text-center z-10">
+                                                                Milestone 3:<br/>Testing
+                                                            </div>
+                                                        </button>
+                                                        <button 
+                                                            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors group" 
+                                                            style={{ left: '75%', top: '50%' }}
+                                                            onClick={() => setSelectedMilestone(4)}
+                                                        >
+                                                            <span className="text-xs">🚩</span>
+                                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity min-w-[120px] text-center z-10">
+                                                                Milestone 4:<br/>Launch
+                                                            </div>
+                                                        </button>
+                                                        <button 
+                                                            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors group" 
+                                                            style={{ left: '100%', top: '50%' }}
+                                                            onClick={() => setSelectedMilestone(5)}
+                                                        >
+                                                            <span className="text-s">⛳</span>
+                                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity min-w-[120px] text-center z-10">
+                                                                Campaign<br/>Completed
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='border border-line rounded-lg'>
+                                        <div className="p-4">
+                                            {selectedMilestone ? (
+                                                <div className="space-y-4">
+                                                    <div className="flex justify-between items-start">
+                                                        <div>
+                                                            <h3 className="text-lg font-semibold text-gray-900">{milestoneContent[selectedMilestone].title}</h3>
+                                                            <p className="text-sm text-gray-600 mt-1">{milestoneContent[selectedMilestone].description}</p>
+                                                        </div>
+                                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                                            milestoneContent[selectedMilestone].status === "Completed" ? "bg-green-100 text-green-800" :
+                                                            milestoneContent[selectedMilestone].status === "In Progress" ? "bg-blue-100 text-blue-800" :
+                                                            milestoneContent[selectedMilestone].status === "Voting" ? "bg-orange-100 text-orange-800" :
+                                                            "bg-gray-100 text-gray-800"
+                                                        }`}>
+                                                            {milestoneContent[selectedMilestone].status}
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-sm text-gray-700">{milestoneContent[selectedMilestone].details}</p>
+                                                </div>
+                                            ) : (
+                                                <div className="text-center py-4 text-gray-500">
+                                                    Select a milestone to view details
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                                     <div className='border border-line rounded-t-lg p-4 pb-2 bg-neutral'>
@@ -132,14 +263,14 @@ export default function CampaignDetail() {
                                             <div className='flex items-center gap-2'>
                                                 <h1>Updates</h1>
                                                 <a href="" className='text-primary hover:text-primary/80 transition-colors'>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" className="w-4 h-4"><path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z" clip-rule="evenodd"></path></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" className="w-4 h-4"><path fillRule="evenodd" d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z" clipRule="evenodd"></path><path fillRule="evenodd" d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z" clipRule="evenodd"></path></svg>
                                                 </a>
 
                                             </div>
                                         </div>
                                             <div className='flex justify-between items-center mb-2'>
                                                <h1 className='text-base font-semibold text-primary'>Update #1</h1>
-                                               <a className="text-xs text-tertiary hover:text-primary transition-colors flex items-center" href="" target="_blank" rel="noreferrer noopener">View Update<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" className="w-3 h-3 ml-1"><path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z" clip-rule="evenodd"></path></svg></a> 
+                                               <a className="text-xs text-tertiary hover:text-primary transition-colors flex items-center" href="" target="_blank" rel="noreferrer noopener">View Update<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" className="w-3 h-3 ml-1"><path fillRule="evenodd" d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z" clipRule="evenodd"></path><path fillRule="evenodd" d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z" clipRule="evenodd"></path></svg></a> 
                                             </div>
                                             <div className="flex flex-col gap-y-10 rounded-lg p-4 bg-wash border-line border"><div className="flex flex-col gap-y-2 font-semibold text-primary text-base"><div>Farcaster Update?</div><div className="text-xs"><a className="hover:underline" href="" target="_blank" rel="noreferrer noopener" data-state="closed">0x00...0000</a></div></div></div>
                                         <div>
@@ -164,77 +295,6 @@ export default function CampaignDetail() {
                 </div>
             </div>
         </div>    
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className='md:flex'>
-           
-            
-            <div className="md:w-1/2 p-6">
-              <div className="flex flex-wrap justify-between items-start mb-4">
-                <div>
-                </div>
-                <div className="mt-2 md:mt-0">
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                    isActive ? 'bg-green-100 text-green-800' : 
-                    isFunded ? 'bg-blue-100 text-blue-800' : 
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {isActive ? 'Active' : isFunded ? 'Funded' : 'Expired'}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium">{formatAmount(campaign.raisedAmount)} raised</span>
-                  <span className="text-gray-500">{progress}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div 
-                    className={`h-2.5 rounded-full ${
-                      isFunded ? 'bg-blue-500' : 'bg-green-500'
-                    }`}
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
-                <div className="flex justify-between mt-1">
-                  <span className="text-sm text-gray-500">{formatAmount(campaign.goalAmount)} goal</span>
-                  <span className={`text-sm font-medium ${
-                    isFailed ? 'text-red-500' : 'text-gray-500'
-                  }`}>
-                    {timeLeft}
-                  </span>
-                </div>
-            </div>
-            
-            <div className="mb-6">
-              <button
-                onClick={() => setShowFundingModal(true)}
-                disabled={!isActive || isCreator}
-                className={`w-full py-3 px-4 rounded-md shadow-sm text-sm font-medium text-white ${
-                  !isActive || isCreator
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                }`}
-              >
-                {isCreator 
-                  ? "You can't fund your own campaign" 
-                  : isActive 
-                    ? 'Fund This Campaign' 
-                    : isFunded 
-                      ? 'Campaign Successfully Funded' 
-                      : 'Campaign Ended'}
-              </button>
-              {!address && isActive && (
-                <p className="text-sm text-center text-gray-500 mt-2">
-                  Connect your wallet to fund this campaign
-                </p>
-              )}
-            </div>
-            
-            
-            </div>
-        </div>        
-      </div>
     </div>
   );
 }
