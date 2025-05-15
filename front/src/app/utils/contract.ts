@@ -11,6 +11,8 @@ export const CONTRACT_ABI = parseAbi([
   'function releaseFunds(uint256 _campaignId)',
   'function refund(uint256 _campaignId)',
   'function getCampaign(uint256 _campaignId) view returns (string title, string description, uint256 goalAmount, uint256 raisedAmount, address creator, uint256 deadline, string category, bool isCompleted, bool hasSubmittedResults)',
+  'function getContribution(uint256 _campaignId, address _contributor) view returns (uint256 amount, uint256 timestamp)',
+  'function getContributions(uint256 _campaignId) view returns ((address contributor, uint256 amount, uint256 timestamp)[])',
   'function campaignCount() view returns (uint256)',
   'function usdc() view returns (address)'
 ]);
@@ -86,5 +88,38 @@ export async function getContractCampaign(id: string): Promise<Campaign | null> 
   } catch (error) {
     console.error('Error fetching campaign:', error);
     return null;
+  }
+}
+
+// Helper function to convert contribution data from contract to our frontend format
+function convertContractContributionToFrontend(
+  campaignId: string,
+  contribution: { contributor: `0x${string}`; amount: bigint; timestamp: bigint },
+  index: number
+) {
+  return {
+    id: `${campaignId}-contrib-${index}`,
+    campaignId,
+    contributor: contribution.contributor,
+    amount: Number(contribution.amount) / 1e6, // Convert from USDC decimals
+    timestamp: new Date(Number(contribution.timestamp) * 1000)
+  };
+}
+
+// Function to get contributions for a campaign
+export async function getContractContributions(campaignId: string) {
+  try {
+    const contributions = await client.readContract({
+      address: CONTRACT_ADDRESS_MAINNET,
+      abi: CONTRACT_ABI,
+      functionName: 'getContributions',
+      args: [BigInt(campaignId)],
+    });
+
+    return (contributions as { contributor: `0x${string}`; amount: bigint; timestamp: bigint }[])
+      .map((contribution, index) => convertContractContributionToFrontend(campaignId, contribution, index));
+  } catch (error) {
+    console.error('Error fetching contributions:', error);
+    return [];
   }
 } 

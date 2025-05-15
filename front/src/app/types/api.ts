@@ -1,6 +1,6 @@
 import { Campaign } from './campaign';
 import { Contribution } from './contribution';
-import { getContractCampaigns, getContractCampaign, CONTRACT_ADDRESS_MAINNET, CONTRACT_ABI } from '../utils/contract';
+import { getContractCampaigns, getContractCampaign, getContractContributions, CONTRACT_ADDRESS_MAINNET, CONTRACT_ABI } from '../utils/contract';
 import { useWriteContract } from 'wagmi';
 import { parseAbi } from 'viem';
 
@@ -16,32 +16,7 @@ export async function getCampaign(id: string): Promise<Campaign | null> {
 
 // Get contributions for a campaign
 export async function getContributions(campaignId: string): Promise<Contribution[]> {
-  // TODO: In the future, this should fetch real contributions from the contract
-  // For now, we'll return mock data
-  return getMockContributions(campaignId);
-}
-
-// Helper function to generate mock contributions
-function getMockContributions(campaignId: string): Contribution[] {
-  const numContributions = Math.floor(Math.random() * 5) + 1;
-  const contributions: Contribution[] = [];
-  
-  for (let i = 0; i < numContributions; i++) {
-    const amount = Math.floor(Math.random() * 1000) + 10;
-    const daysAgo = Math.floor(Math.random() * 30);
-    const date = new Date();
-    date.setDate(date.getDate() - daysAgo);
-    
-    contributions.push({
-      id: `${campaignId}-contrib-${i}`,
-      campaignId,
-      contributor: `0x${Math.random().toString(16).substring(2, 12)}`,
-      amount,
-      timestamp: date
-    });
-  }
-  
-  return contributions.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+  return getContractContributions(campaignId);
 }
 
 // Create a new campaign
@@ -85,7 +60,7 @@ export function useFundCampaign() {
   const fundCampaign = async (campaignId: string, amount: number) => {
     try {
       // First approve the OnChainFund contract to spend MockUSDC
-      const mockUsdcAddress = '0xaeB92F70f4BbBB6488D6cdF51043906649AAA3f7';
+      const mockUsdcAddress = '0xd1f50d53775633aa590e3cbc42c62c404e6c7e99';
       const mockUsdcAbi = parseAbi([
         'function approve(address spender, uint256 amount) returns (bool)',
         'function allowance(address owner, address spender) view returns (uint256)'
