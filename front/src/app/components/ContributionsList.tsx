@@ -1,9 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Contribution } from '../types/campaign';
+import { Contribution } from '../types/contribution';
 import { getContributions } from '../types/api';
 import { formatAddress, formatAmount, formatDate } from '../utils/format';
 import { LoadingSpinner } from './LoadingSpinner';
+import { GetAddressReturnType } from '@coinbase/onchainkit/identity';
 interface ContributionsListProps {
   campaignId: string;
 }
@@ -50,12 +51,12 @@ export function ContributionsList({ campaignId }: ContributionsListProps) {
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
                     <span className="text-blue-600 font-medium">
-                      {formatAddress(contribution.contributor).substring(0, 2)}
+                      {formatAddress(contribution.contributor as GetAddressReturnType).substring(0, 2)}
                     </span>
                   </div>
                   <div className="ml-4">
                     <div className="text-sm font-medium text-gray-900">
-                      {formatAddress(contribution.contributor)}
+                      {formatAddress(contribution.contributor as GetAddressReturnType)}
                     </div>
                     <div className="text-sm text-gray-500">
                       {formatDate(contribution.timestamp)}

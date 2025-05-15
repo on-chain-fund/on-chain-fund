@@ -30,7 +30,7 @@ const client = createPublicClient({
 // Helper function to convert campaign data from contract to our frontend format
 function convertContractCampaignToFrontend(
   id: number,
-  contractData: [string, string, bigint, bigint, string, bigint, string]
+  contractData: readonly [string, string, bigint, bigint, `0x${string}`, bigint, string, boolean, boolean]
 ): Campaign {
   const [title, description, goalAmount, raisedAmount, creator, deadline, category] = contractData;
   
@@ -66,7 +66,7 @@ export async function getContractCampaigns(): Promise<Campaign[]> {
       args: [BigInt(i)],
     });
 
-    campaigns.push(convertContractCampaignToFrontend(i, campaignData as [string, string, bigint, bigint, string, bigint, string]));
+    campaigns.push(convertContractCampaignToFrontend(i, campaignData as readonly [string, string, bigint, bigint, `0x${string}`, bigint, string, boolean, boolean]));
   }
 
   return campaigns;
@@ -82,7 +82,7 @@ export async function getContractCampaign(id: string): Promise<Campaign | null> 
       args: [BigInt(id)],
     });
 
-    return convertContractCampaignToFrontend(Number(id), campaignData as [string, string, bigint, bigint, string, bigint, string]);
+    return convertContractCampaignToFrontend(Number(id), campaignData as readonly [string, string, bigint, bigint, `0x${string}`, bigint, string, boolean, boolean]);
   } catch (error) {
     console.error('Error fetching campaign:', error);
     return null;

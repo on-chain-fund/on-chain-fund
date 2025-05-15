@@ -2,6 +2,7 @@ import { Campaign } from './campaign';
 import { Contribution } from './contribution';
 import { getContractCampaigns, getContractCampaign, CONTRACT_ADDRESS_MAINNET, CONTRACT_ABI } from '../utils/contract';
 import { useWriteContract } from 'wagmi';
+import { parseAbi } from 'viem';
 
 // Get all campaigns
 export async function getCampaigns(): Promise<Campaign[]> {
@@ -82,15 +83,47 @@ export function useFundCampaign() {
   const { writeContract, isPending, isSuccess, isError, reset } = useWriteContract();
   
   const fundCampaign = async (campaignId: string, amount: number) => {
-    writeContract({
-      address: CONTRACT_ADDRESS_MAINNET,
-      abi: CONTRACT_ABI,
-      functionName: 'contribute',
-      args: [
-        BigInt(campaignId),
-        BigInt(amount * 1e6) // Convert to USDC decimals
-      ]
-    });
+    try {
+      // First approve the OnChainFund contract to spend MockUSDC
+      const mockUsdcAddress = '0xaeB92F70f4BbBB6488D6cdF51043906649AAA3f7';
+      const mockUsdcAbi = parseAbi([
+        'function approve(address spender, uint256 amount) returns (bool)',
+        'function allowance(address owner, address spender) view returns (uint256)'
+      ]);
+
+      console.log('Approving MockUSDC spending...');
+      // Approve MockUSDC spending
+      const approveTx = await writeContract({
+        address: mockUsdcAddress,
+        abi: mockUsdcAbi,
+        functionName: 'approve',
+        args: [
+          CONTRACT_ADDRESS_MAINNET,
+          BigInt(amount * 1e6) // Convert to USDC decimals
+        ]
+      });
+      console.log('Approval transaction:', approveTx);
+
+      // Wait for approval transaction to be mined
+      await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds for transaction to be mined
+
+      console.log('Contributing to campaign...');
+      // Then contribute to the campaign
+      const contributeTx = await writeContract({
+        address: CONTRACT_ADDRESS_MAINNET,
+        abi: CONTRACT_ABI,
+        functionName: 'contribute',
+        args: [
+          BigInt(campaignId),
+          BigInt(amount * 1e6) // Convert to USDC decimals
+        ]
+      });
+      console.log('Contribution transaction:', contributeTx);
+
+    } catch (error) {
+      console.error('Error in fundCampaign:', error);
+      throw error; // Re-throw to be handled by the UI
+    }
   };
 
   return {

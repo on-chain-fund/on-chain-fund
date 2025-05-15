@@ -4,12 +4,14 @@ import { useAccount } from 'wagmi';
 import { Buy } from '@coinbase/onchainkit/buy';
 import { useFundCampaign } from '../types/api';
 import { formatAmount } from '../utils/format';
+
 interface FundingModalProps {
   campaignId: string;
   campaignTitle: string;
   onClose: () => void;
   onSuccess: () => void;
 }
+
 export function FundingModal({ campaignId, campaignTitle, onClose, onSuccess }: FundingModalProps) {
   const [amount, setAmount] = useState<number>(10);
   const [showBuyUSDC, setShowBuyUSDC] = useState(false);
@@ -107,6 +109,9 @@ export function FundingModal({ campaignId, campaignTitle, onClose, onSuccess }: 
                   required
                   disabled={isPending}
                 />
+                <p className="mt-1 text-sm text-gray-500">
+                  Note: Your contribution will be made using MockUSDC for testing purposes.
+                </p>
               </div>
               
               <div className="flex space-x-2 mb-4">
