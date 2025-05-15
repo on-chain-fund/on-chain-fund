@@ -50,6 +50,8 @@ export default function CreateCampaign() {
   useEffect(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
+    // Set to start of day in local time
+    tomorrow.setHours(0, 0, 0, 0);
     
     setFormData(prev => ({
       ...prev,
@@ -68,11 +70,19 @@ export default function CreateCampaign() {
       router.push('/');
     }
   }, [isSuccess, router]);
+  const formatDateForInput = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'goal' 
+      [name]: name === 'goalAmount' 
         ? Number(value) 
         : name === 'deadline'
           ? new Date(value)
@@ -181,7 +191,7 @@ export default function CreateCampaign() {
               
               {/* Funding Goal */}
               <div>
-                <label htmlFor="goal" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="goalAmount" className="block text-sm font-medium text-gray-700">
                   Funding Goal (USDC) *
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -190,8 +200,8 @@ export default function CreateCampaign() {
                   </div>
                   <input
                     type="number"
-                    name="goal"
-                    id="goal"
+                    name="goalAmount"
+                    id="goalAmount"
                     value={formData.goalAmount}
                     onChange={handleChange}
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
@@ -215,16 +225,16 @@ export default function CreateCampaign() {
                   Fundraising Deadline *
                 </label>
                 <input
-                  type="date"
+                  type="datetime-local"
                   name="deadline"
                   id="deadline"
-                  value={formData.deadline.toISOString().split('T')[0]}
+                  value={formatDateForInput(formData.deadline)}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   required
                 />
                 <p className="mt-1 text-sm text-gray-500">
-                  Your fundraising period will end at 11:59 PM on this date.
+                  Your fundraising period will end at the specified date and time in your local timezone.
                 </p>
               </div>
               
