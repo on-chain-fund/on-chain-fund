@@ -17,4 +17,17 @@ contract MockUSDC is ERC20, Ownable {
     function decimals() public pure override returns (uint8) {
         return 6;
     }
-} 
+
+    // Function to mint new tokens (only owner can call)
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
+    }
+
+    // Function to airdrop tokens to multiple addresses
+    function airdrop(address[] calldata recipients, uint256[] calldata amounts) external onlyOwner {
+        require(recipients.length == amounts.length, "Arrays length mismatch");
+        for (uint256 i = 0; i < recipients.length; i++) {
+            _mint(recipients[i], amounts[i]);
+        }
+    }
+}

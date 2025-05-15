@@ -7,6 +7,13 @@ contract OnChainFund {
     // Stablecoin 
     IERC20 public usdc;
     
+    // Contribution details
+    struct Contribution {
+        address contributor;
+        uint256 amount;
+        uint256 timestamp;
+    }
+    
     // Campaign details
     struct Campaign {
         string title;
@@ -18,7 +25,8 @@ contract OnChainFund {
         string category;
         bool isCompleted;
         bool hasSubmittedResults;
-        mapping(address => uint256) contributions;
+        Contribution[] contributions;
+        mapping(address => uint256) contributorIndex; // Track contributor's index in contributions array
     }
     
     // Campaign ID to Campaign
@@ -27,7 +35,7 @@ contract OnChainFund {
 
     // Events for transparency
     event CampaignCreated(uint256 indexed campaignId, address creator, uint256 goal, uint256 deadline, string description);
-    event Contributed(uint256 indexed campaignId, address contributor, uint256 amount);
+    event Contributed(uint256 indexed campaignId, address contributor, uint256 amount, uint256 timestamp);
     event ResultsSubmitted(uint256 indexed campaignId, address creator);
     event FundsReleased(uint256 indexed campaignId, uint256 amount);
     event Refunded(uint256 indexed campaignId, address contributor, uint256 amount);
@@ -71,10 +79,26 @@ contract OnChainFund {
         require(_amount > 0, "Amount must be positive");
 
         require(usdc.transferFrom(msg.sender, address(this), _amount), "USDC transfer failed");
-        campaign.contributions[msg.sender] += _amount;
+        
+        // Check if contributor already exists
+        uint256 contributorIndex = campaign.contributorIndex[msg.sender];
+        if (contributorIndex == 0 && campaign.contributions.length > 0) {
+            // New contributor
+            campaign.contributions.push(Contribution({
+                contributor: msg.sender,
+                amount: _amount,
+                timestamp: block.timestamp
+            }));
+            campaign.contributorIndex[msg.sender] = campaign.contributions.length;
+        } else {
+            // Existing contributor
+            campaign.contributions[contributorIndex - 1].amount += _amount;
+            campaign.contributions[contributorIndex - 1].timestamp = block.timestamp;
+        }
+        
         campaign.raisedAmount += _amount;
 
-        emit Contributed(_campaignId, msg.sender, _amount);
+        emit Contributed(_campaignId, msg.sender, _amount, block.timestamp);
     }
 
     // Submit campaign results
@@ -111,20 +135,24 @@ contract OnChainFund {
         require(!campaign.isCompleted, "Campaign already completed");
         require(campaign.raisedAmount < campaign.goalAmount, "Goal met");
 
-        uint256 contribution = campaign.contributions[msg.sender];
-        require(contribution > 0, "No contribution");
+        uint256 contributorIndex = campaign.contributorIndex[msg.sender];
+        require(contributorIndex > 0, "No contribution");
 
-        campaign.contributions[msg.sender] = 0;
-        require(usdc.transfer(msg.sender, contribution), "USDC refund failed");
+        Contribution storage contribution = campaign.contributions[contributorIndex - 1];
+        uint256 amount = contribution.amount;
+        require(amount > 0, "No contribution");
 
-        campaign.raisedAmount -= contribution;
+        contribution.amount = 0;
+        require(usdc.transfer(msg.sender, amount), "USDC refund failed");
+
+        campaign.raisedAmount -= amount;
 
         // Only mark as completed if this was the last contribution
         if (campaign.raisedAmount == 0) {
             campaign.isCompleted = true;
         }
 
-        emit Refunded(_campaignId, msg.sender, contribution);
+        emit Refunded(_campaignId, msg.sender, amount);
     }
 
     // Get campaign details
@@ -151,5 +179,18 @@ contract OnChainFund {
             campaign.isCompleted,
             campaign.hasSubmittedResults
         );
+    }
+
+    // Get contribution details for a specific address in a campaign
+    function getContribution(uint256 _campaignId, address _contributor) external view returns (uint256 amount, uint256 timestamp) {
+        uint256 contributorIndex = campaigns[_campaignId].contributorIndex[_contributor];
+        require(contributorIndex > 0, "No contribution");
+        Contribution storage contribution = campaigns[_campaignId].contributions[contributorIndex - 1];
+        return (contribution.amount, contribution.timestamp);
+    }
+
+    // Get all contributions for a campaign
+    function getContributions(uint256 _campaignId) external view returns (Contribution[] memory) {
+        return campaigns[_campaignId].contributions;
     }
 }
