@@ -51,7 +51,7 @@ function CampaignCard({ campaign }: CampaignCardProps) {
           </div>
           
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-500">{formatAmount(campaign.goal)} goal</span>
+            <span className="text-gray-500">{formatAmount(campaign.goal)} USDC</span>
             <span className={`font-medium ${
               campaign.status === CampaignStatus.EXPIRED ? 'text-red-500' : 'text-gray-500'
             }`}>

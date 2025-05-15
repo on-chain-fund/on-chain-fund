@@ -59,6 +59,16 @@ export default function Header() {
               >
                 How It Works
               </Link>
+              {/* <Link 
+                href="/vote" 
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                  isActive('/how-it-works') 
+                    ? 'border-blue-500 text-black' 
+                    : 'border-transparent text-gray-500 hover:text-black hover:border-gray-300'
+                }`}
+              >
+                Vote
+              </Link> */}
             </nav>
           </div>
           <div className="hidden sm:flex items-center space-x-4">
