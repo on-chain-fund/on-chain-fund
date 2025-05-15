@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-white shadow-sm relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -70,7 +70,7 @@ export default function Header() {
               </Link> */}
             </nav>
           </div>
-          <div className="hidden sm:flex items-center space-x-4">
+          <div className="hidden sm:flex items-center space-x-4 relative">
             <Wallet>
               <ConnectWallet>
                 <Avatar className="h-6 w-6" />
