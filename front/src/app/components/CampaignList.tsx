@@ -5,8 +5,9 @@ import { Campaign, CampaignStatus } from '../types/campaign';
 import { getCampaigns, getUserCampaigns } from '../types/api';
 import CampaignCard  from './CampaignCard';
 import { LoadingSpinner } from './LoadingSpinner';
+import { calculateCampaignStatus } from '../utils/campaignUtils';
 
-type FilterType = 'all' | 'funded (no action)' | 'funded (needs action)' | 'funding in progress' | 'my-campaigns';
+export type FilterType = 'all' | 'fundraising' | 'work-in-progress' | 'failed' | 'finalized' | 'my-campaigns';
 
 export function CampaignList() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -40,12 +41,14 @@ export function CampaignList() {
         } else {
           let filtered = [...campaigns];
           
-          if (filter === 'funded (no action)') {
-            filtered = filtered.filter(c => c.status === CampaignStatus.FUNDED_NO_ACTION);
-          } else if (filter === 'funded (needs action)') {
-            filtered = filtered.filter(c => c.status === CampaignStatus.FUNDED_NEEDS_ACTION);
-          } else if (filter === 'funding in progress') {
-            filtered = filtered.filter(c => c.status === CampaignStatus.FUNDING_IN_PROGRESS);
+          if (filter === 'fundraising') {
+            filtered = filtered.filter(c => calculateCampaignStatus(c).status === CampaignStatus.FUNDRAISING);
+          } else if (filter === 'work-in-progress') {
+            filtered = filtered.filter(c => calculateCampaignStatus(c).status === CampaignStatus.WORK_IN_PROGRESS);
+          } else if (filter === 'failed') {
+            filtered = filtered.filter(c => calculateCampaignStatus(c).status === CampaignStatus.FAILED_TO_FUNDRAISE);
+          } else if (filter === 'finalized') {
+            filtered = filtered.filter(c => calculateCampaignStatus(c).status === CampaignStatus.FINALIZED);
           }
           
           setFilteredCampaigns(filtered);
@@ -74,34 +77,44 @@ export function CampaignList() {
           All Campaigns
         </button>
         <button
-          onClick={() => setFilter('funded (no action)')}
+          onClick={() => setFilter('fundraising')}
           className={`px-6 py-4 rounded-md text-sm font-medium ${
-            filter === 'funded (no action)' 
+            filter === 'fundraising' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
-          Funded (No Action)
+          Fundraising
         </button>
         <button
-          onClick={() => setFilter('funded (needs action)')}
+          onClick={() => setFilter('work-in-progress')}
           className={`px-6 py-4 rounded-md text-sm font-medium ${
-            filter === 'funded (needs action)' 
+            filter === 'work-in-progress' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
-          Funded (Needs Action)
+          Work in Progress
         </button>
         <button
-          onClick={() => setFilter('funding in progress')}
+          onClick={() => setFilter('failed')}
           className={`px-6 py-4 rounded-md text-sm font-medium ${
-            filter === 'funding in progress' 
+            filter === 'failed' 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
-         Funding (In Progress)
+          Failed
+        </button>
+        <button
+          onClick={() => setFilter('finalized')}
+          className={`px-6 py-4 rounded-md text-sm font-medium ${
+            filter === 'finalized' 
+              ? 'bg-blue-600 text-white' 
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+        >
+          Completed
         </button>
         <button
           onClick={() => setFilter('my-campaigns')}

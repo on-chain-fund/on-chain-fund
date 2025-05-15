@@ -1,4 +1,5 @@
-import { Campaign, Contribution } from './campaign';
+import { Campaign } from './campaign';
+import { Contribution } from './contribution';
 import { getContractCampaigns, getContractCampaign, CONTRACT_ADDRESS_MAINNET, CONTRACT_ABI } from '../utils/contract';
 import { useWriteContract } from 'wagmi';
 
@@ -46,12 +47,12 @@ function getMockContributions(campaignId: string): Contribution[] {
 export function useCreateCampaign() {
   const { writeContract, isPending, isSuccess, isError, reset } = useWriteContract();
   
-  const createCampaign = async (campaign: Omit<Campaign, 'status' | 'id' | 'raised'>) => {
+  const createCampaign = async (campaign: Omit<Campaign, 'status' | 'id' | 'raisedAmount'>) => {
     // Calculate duration in seconds from now until end date
-    const duration = Math.floor((campaign.endDate.getTime() - Date.now()) / 1000);
+    const duration = Math.floor((campaign.deadline.getTime() - Date.now()) / 1000);
 
     // Convert goal amount to USDC decimals (6)
-    const goalAmount = BigInt(Math.floor(campaign.goal * 10**6));
+    const goalAmount = BigInt(Math.floor(campaign.goalAmount * 10**6));
 
     writeContract({
       address: CONTRACT_ADDRESS_MAINNET,
@@ -104,7 +105,7 @@ export function useFundCampaign() {
 // Get campaigns created by a user
 export async function getUserCampaigns(userAddress: string): Promise<Campaign[]> {
   const campaigns = await getContractCampaigns();
-  return campaigns.filter(campaign => campaign.creator.toLowerCase() === userAddress.toLowerCase());
+  return campaigns.filter(campaign => campaign.creator?.toLowerCase() === userAddress.toLowerCase());
 }
 
 // Get contributions made by a user

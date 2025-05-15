@@ -34,14 +34,17 @@ export default function CreateCampaign() {
   const { address, isConnected } = useAccount();
   const { createCampaign, isPending, isSuccess } = useCreateCampaign();
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Omit<Campaign, 'id' | 'status' | 'raised'>>({
+  const [formData, setFormData] = useState<Omit<Campaign, 'id'>>({
     title: '',
     description: '',
-    goal: 1000,
-    endDate: new Date(),
-    category: 'Technology',
     imageUrl: '',
-    creator: '',
+    goalAmount: 1000,
+    raisedAmount: 0,
+    creator: address,
+    deadline: new Date(),
+    category: 'Technology',
+    isCompleted: false,
+    hasSubmittedResults: false,
   });
   // Set minimum end date to tomorrow
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function CreateCampaign() {
     
     setFormData(prev => ({
       ...prev,
-      endDate: tomorrow,
+      deadline: tomorrow,
     }));
   }, []);
   useEffect(() => {
@@ -71,7 +74,7 @@ export default function CreateCampaign() {
       ...prev,
       [name]: name === 'goal' 
         ? Number(value) 
-        : name === 'endDate'
+        : name === 'deadline'
           ? new Date(value)
           : value,
     }));
@@ -95,15 +98,15 @@ export default function CreateCampaign() {
         throw new Error('Description is required');
       }
       
-      if (formData.goal <= 0) {
+      if (formData.goalAmount <= 0) {
         throw new Error('Funding goal must be greater than 0');
       }
       
-      if (!formData.endDate) {
+      if (!formData.deadline) {
         throw new Error('End date is required');
       }
       
-      const endDate = new Date(formData.endDate);
+      const endDate = new Date(formData.deadline);
       const now = new Date();
       
       if (endDate <= now) {
@@ -113,7 +116,6 @@ export default function CreateCampaign() {
       // Create the campaign
       await createCampaign({
         ...formData,
-        creator: address,
       });
       
     } catch (err) {
@@ -190,7 +192,7 @@ export default function CreateCampaign() {
                     type="number"
                     name="goal"
                     id="goal"
-                    value={formData.goal}
+                    value={formData.goalAmount}
                     onChange={handleChange}
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                     placeholder="0.00"
@@ -207,22 +209,22 @@ export default function CreateCampaign() {
                 </p>
               </div>
               
-              {/* End Date */}
+              {/* Fundraising Deadline */}
               <div>
-                <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
-                  Campaign End Date *
+                <label htmlFor="deadline" className="block text-sm font-medium text-gray-700">
+                  Fundraising Deadline *
                 </label>
                 <input
                   type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={formData.endDate.toISOString().split('T')[0]}
+                  name="deadline"
+                  id="deadline"
+                  value={formData.deadline.toISOString().split('T')[0]}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   required
                 />
                 <p className="mt-1 text-sm text-gray-500">
-                  Your campaign will end at 11:59 PM on this date.
+                  Your fundraising period will end at 11:59 PM on this date.
                 </p>
               </div>
               

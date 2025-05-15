@@ -8,7 +8,8 @@ import { ContributionsList } from '../../components/ContributionsList';
 import { FundingModal } from '../../components/FundingModal';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Campaign, CampaignStatus } from '../../types/campaign';
-import { Avatar, Address } from '@coinbase/onchainkit/identity';
+import { Avatar, Address, GetAddressReturnType } from '@coinbase/onchainkit/identity';
+import { calculateCampaignStatus } from '@/app/utils/campaignUtils';
 
 
 export default function CampaignDetail() {
@@ -59,12 +60,13 @@ export default function CampaignDetail() {
       </div>
     );
   }
-  const progress = calculateProgress(campaign.raised, campaign.goal);
-  const timeLeft = calculateTimeLeft(campaign.endDate);
-  const isActive = campaign.status === CampaignStatus.ACTIVE;
-  const isFunded = campaign.status === CampaignStatus.FUNDED;
-  const isExpired = campaign.status === CampaignStatus.EXPIRED;
-  const isCreator = address && address.toLowerCase() === campaign.creator.toLowerCase();
+  const progress = calculateProgress(campaign.raisedAmount, campaign.goalAmount);
+  const timeLeft = calculateTimeLeft(campaign.deadline);
+  const status = calculateCampaignStatus(campaign);
+  const isActive = status.status === CampaignStatus.FUNDRAISING;
+  const isFunded = status.status === CampaignStatus.FINALIZED || status.status === CampaignStatus.WORK_IN_PROGRESS;
+  const isFailed = status.status === CampaignStatus.FAILED_TO_FUNDRAISE;
+  const isCreator = address && address.toLowerCase() === campaign.creator?.toLowerCase();
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className='flex justify-between items-center mb-6'>
@@ -102,7 +104,7 @@ export default function CampaignDetail() {
                 <div>
                   <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{campaign.title}</h1>
                   <p className="text-gray-600">
-                    by {formatAddress(campaign.creator)}
+                    by {formatAddress(campaign.creator as GetAddressReturnType)}
                     {isCreator && <span className="ml-2 text-blue-600 text-sm">(You)</span>}
                   </p>
                 </div>
@@ -119,7 +121,7 @@ export default function CampaignDetail() {
               
               <div className="mb-6">
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium">{formatAmount(campaign.raised)} raised</span>
+                  <span className="font-medium">{formatAmount(campaign.raisedAmount)} raised</span>
                   <span className="text-gray-500">{progress}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -131,9 +133,9 @@ export default function CampaignDetail() {
                   ></div>
                 </div>
                 <div className="flex justify-between mt-1">
-                  <span className="text-sm text-gray-500">{formatAmount(campaign.goal)} goal</span>
+                  <span className="text-sm text-gray-500">{formatAmount(campaign.goalAmount)} goal</span>
                   <span className={`text-sm font-medium ${
-                    isExpired ? 'text-red-500' : 'text-gray-500'
+                    isFailed ? 'text-red-500' : 'text-gray-500'
                   }`}>
                     {timeLeft}
                   </span>
@@ -172,11 +174,11 @@ export default function CampaignDetail() {
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-gray-500">Created</h3>
-                <p className="mt-1 text-lg font-semibold text-gray-900">{formatDate(new Date(campaign.endDate.getTime() - 30 * 24 * 60 * 60 * 1000))}</p>
+                <p className="mt-1 text-lg font-semibold text-gray-900">{formatDate(new Date(campaign.deadline.getTime() - 30 * 24 * 60 * 60 * 1000))}</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-gray-500">End Date</h3>
-                <p className="mt-1 text-lg font-semibold text-gray-900">{formatDate(campaign.endDate)}</p>
+                <p className="mt-1 text-lg font-semibold text-gray-900">{formatDate(campaign.deadline)}</p>
               </div>
             </div>
             </div>
@@ -189,10 +191,10 @@ export default function CampaignDetail() {
           <div className="p-6 border-t border-gray-200">
             <h2 className="text-xl font-semibold text-black mb-4">Creator</h2>
             <div className="flex items-center">
-              <Avatar address={campaign.creatorAddress} className="h-10 w-10 mr-3" />
+              <Avatar address={campaign.creator} className="h-10 w-10 mr-3" />
               <div>
-              <p className="text-black font-medium">{campaign.creatorName || 'Anonymous Creator'}</p>
-              <Address address={campaign.creatorAddress} className="text-sm text-gray-500" />
+              <p className="text-black font-medium">{campaign.creator || 'Anonymous Creator'}</p>
+              <Address address={campaign.creator} className="text-sm text-gray-500" />
             </div>
             </div>
             </div>

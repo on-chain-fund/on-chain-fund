@@ -1,32 +1,26 @@
+import { GetAddressReturnType } from "@coinbase/onchainkit/identity";
+
 export interface Campaign {
-    id: string;
-    title: string;
-    description: string;
-    imageUrl: string;
-    goal: number;
-    raised: number;
-    creator: string;
-    endDate: Date;
-    category: string;
-    status: CampaignStatus;
-  }
-  export interface Contribution {
-    id: string;
-    campaignId: string;
-    contributor: string;
-    amount: number;
-    timestamp: Date;
-  }
-  export enum CampaignStatus {
-    ACTIVE = "ACTIVE",
-    FUNDED = "FUNDED",
-    EXPIRED = "EXPIRED",
-    FUNDED_NO_ACTION = "FUNDED_NO_ACTION",
-    FUNDED_NEEDS_ACTION = "FUNDED_NEEDS_ACTION",
-    FUNDING_IN_PROGRESS = "FUNDING_IN_PROGRESS"
-  }
-  export interface CampaignWithStatus extends Campaign {
-    status: CampaignStatus;
-    percentageFunded: number;
-    daysLeft: number;
-  }
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  goalAmount: number;
+  raisedAmount: number;
+  creator: GetAddressReturnType | undefined;
+  deadline: Date;
+  category: string;
+  isCompleted: boolean;
+  hasSubmittedResults: boolean;
+}
+export enum CampaignStatus {
+  FUNDRAISING = "Fundraising",
+  WORK_IN_PROGRESS = "Work in Progress", // isCompleted = true
+  FAILED_TO_FUNDRAISE = "Failed",
+  FINALIZED = "Finalized"  // hasSubmittedResults = true
+}
+export interface CampaignWithStatus extends Campaign {
+  status: CampaignStatus;
+  percentageFunded: number;
+  daysLeft: number;
+}

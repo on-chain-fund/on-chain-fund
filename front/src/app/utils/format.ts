@@ -1,4 +1,6 @@
-export function formatAddress(address: string): string {
+import { GetAddressReturnType } from "@coinbase/onchainkit/identity";
+
+export function formatAddress(address: GetAddressReturnType): string {
     if (!address) return '';
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   }

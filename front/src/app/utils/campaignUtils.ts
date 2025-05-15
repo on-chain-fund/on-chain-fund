@@ -1,16 +1,24 @@
 import { Campaign, CampaignStatus, CampaignWithStatus } from '../types/campaign';
 export function calculateCampaignStatus(campaign: Campaign): CampaignWithStatus {
   const now = Date.now();
-  const endDate = campaign.endDate.getTime();
-  const goal = campaign.goal;
-  const raised = campaign.raised;
+  const endDate = campaign.deadline.getTime();
+  const goal = campaign.goalAmount;
+  const raised = campaign.raisedAmount;
   
   let status: CampaignStatus;
   
-  if (now > endDate) {
-    status = raised >= goal ? CampaignStatus.FUNDED : CampaignStatus.EXPIRED;
+  if (now < endDate) {
+    status = CampaignStatus.FUNDRAISING;
   } else {
-    status = CampaignStatus.ACTIVE;
+    if (raised >= goal) {
+      if (campaign.hasSubmittedResults) {
+        status = CampaignStatus.FINALIZED;
+      } else {
+        status = CampaignStatus.WORK_IN_PROGRESS;
+      }
+    } else {
+      status = CampaignStatus.FAILED_TO_FUNDRAISE;
+    }
   }
   
   const percentageFunded = goal > 0 ? (raised / goal) * 100 : 0;

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Campaign } from '../types/campaign';
 import { getCampaigns } from '../types/api';
 import CampaignCard from '../components/CampaignCard';
+import { calculateCampaignStatus } from '../utils/campaignUtils';
 
 function Explore() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -28,7 +29,7 @@ function Explore() {
   }, []);
 
   const categories = ['All', 'Education', 'Gaming', 'DeFi', 'Art', 'Social Impact'];
-  const statuses = ['All', 'Active', 'Funded', 'Expired'];
+  const statuses = ['All', 'Fundraising', 'Work in Progress', 'Failed', 'Finalized'];
   const sortOptions = [
     { value: 'newest', label: 'Newest' },
     { value: 'oldest', label: 'Oldest' },
@@ -45,7 +46,7 @@ function Explore() {
   }
   
   if (activeStatus !== 'All') {
-    filteredCampaigns = filteredCampaigns.filter(campaign => campaign.status === activeStatus.toLowerCase());
+    filteredCampaigns = filteredCampaigns.filter(campaign => calculateCampaignStatus(campaign).status === activeStatus);
   }
   
   if (searchTerm) {
@@ -53,7 +54,7 @@ function Explore() {
     filteredCampaigns = filteredCampaigns.filter(campaign => 
       campaign.title.toLowerCase().includes(term) || 
       campaign.description.toLowerCase().includes(term) ||
-      campaign.creator.toLowerCase().includes(term)
+      campaign.creator?.toLowerCase().includes(term)
     );
   }
   
@@ -65,11 +66,11 @@ function Explore() {
       case 'oldest':
         return a.id.localeCompare(b.id);
       case 'most-funded':
-        return b.raised - a.raised;
+        return b.raisedAmount - a.raisedAmount;
       case 'least-funded':
-        return a.raised - b.raised;
+        return a.raisedAmount - b.raisedAmount;
       case 'ending-soon':
-        return a.endDate.getTime() - b.endDate.getTime();
+        return a.deadline.getTime() - b.deadline.getTime();
       default:
         return 0;
     }

@@ -1,4 +1,5 @@
-import { Campaign, CampaignStatus } from '../types/campaign';
+import { GetAddressReturnType } from '@coinbase/onchainkit/identity';
+import { Campaign } from '../types/campaign';
 import { createPublicClient, http, parseAbi } from 'viem';
 import { base } from 'viem/chains';
 
@@ -29,29 +30,22 @@ const client = createPublicClient({
 // Helper function to convert campaign data from contract to our frontend format
 function convertContractCampaignToFrontend(
   id: number,
-  contractData: [string, string, bigint, bigint, string, bigint, string, boolean, boolean]
+  contractData: [string, string, bigint, bigint, string, bigint, string]
 ): Campaign {
-  const [title, description, goalAmount, raisedAmount, creator, deadline, category, isCompleted, hasSubmittedResults] = contractData;
+  const [title, description, goalAmount, raisedAmount, creator, deadline, category] = contractData;
   
-  // Calculate status based on contract data
-  let status: CampaignStatus = CampaignStatus.ACTIVE;
-  if (isCompleted) {
-    status = CampaignStatus.FUNDED;
-  } else if (BigInt(Math.floor(Date.now() / 1000)) > deadline) {
-    status = CampaignStatus.EXPIRED;
-  }
-
   return {
     id: id.toString(),
-    title,
-    description,
+    title: title, 
+    description: description,
     imageUrl: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7', // Default image
-    goal: Number(goalAmount) / 1e6, // Convert from USDC decimals (6)
-    raised: Number(raisedAmount) / 1e6,
-    creator,
-    endDate: new Date(Number(deadline) * 1000),
-    category,
-    status,
+    goalAmount: Number(goalAmount) / 1e6, // Convert from USDC decimals (6)
+    raisedAmount: Number(raisedAmount) / 1e6,
+    creator: creator as GetAddressReturnType,
+    deadline: new Date(Number(deadline) * 1000),
+    category: category,
+    isCompleted: false,
+    hasSubmittedResults: false,
   };
 }
 
@@ -72,7 +66,7 @@ export async function getContractCampaigns(): Promise<Campaign[]> {
       args: [BigInt(i)],
     });
 
-    campaigns.push(convertContractCampaignToFrontend(i, campaignData as [string, string, bigint, bigint, string, bigint, string, boolean, boolean]));
+    campaigns.push(convertContractCampaignToFrontend(i, campaignData as [string, string, bigint, bigint, string, bigint, string]));
   }
 
   return campaigns;
@@ -88,7 +82,7 @@ export async function getContractCampaign(id: string): Promise<Campaign | null> 
       args: [BigInt(id)],
     });
 
-    return convertContractCampaignToFrontend(Number(id), campaignData as [string, string, bigint, bigint, string, bigint, string, boolean, boolean]);
+    return convertContractCampaignToFrontend(Number(id), campaignData as [string, string, bigint, bigint, string, bigint, string]);
   } catch (error) {
     console.error('Error fetching campaign:', error);
     return null;
