@@ -19,7 +19,7 @@ export const CONTRACT_ABI = parseAbi([
 export const CONTRACT_ADDRESS_TESTNET = '0xd09a5362077B352c31e6283ae63c572BC101767d';
 
 // Contract address on Base Mainnet
-export const CONTRACT_ADDRESS_MAINNET = '0x0aD3d9F0Dc177d79834D22031246B2f3C00C611c';
+export const CONTRACT_ADDRESS_MAINNET = '0x0AA77a866f3d7F61b294477c87cD41817CA5c6a0';
 
 // Create a public client for read operations
 const client = createPublicClient({

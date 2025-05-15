@@ -20,7 +20,7 @@ contract OnChainFundTest is Test {
     string public constant CATEGORY = "Technology";
 
     event CampaignCreated(uint256 indexed campaignId, address creator, uint256 goal, uint256 deadline, string description);
-    event Contributed(uint256 indexed campaignId, address contributor, uint256 amount);
+    event Contributed(uint256 indexed campaignId, address contributor, uint256 amount, uint256 timestamp);
     event ResultsSubmitted(uint256 indexed campaignId, address creator);
     event FundsReleased(uint256 indexed campaignId, uint256 amount);
     event Refunded(uint256 indexed campaignId, address contributor, uint256 amount);
@@ -82,7 +82,7 @@ contract OnChainFundTest is Test {
         usdc.approve(address(fund), 500e6);
         
         vm.expectEmit(true, true, true, true);
-        emit Contributed(0, contributor1, 500e6);
+        emit Contributed(0, contributor1, 500e6, block.timestamp);
         
         fund.contribute(0, 500e6);
         vm.stopPrank();
@@ -267,5 +267,81 @@ contract OnChainFundTest is Test {
         // Try to release funds without submitting results
         vm.prank(creator);
         fund.releaseFunds(0); // Should revert
+    }
+
+    function test_GetContribution() public {
+        // Create campaign
+        vm.prank(creator);
+        fund.createCampaign(TITLE, DESCRIPTION, GOAL, DURATION, CATEGORY);
+
+        // Contribute
+        vm.startPrank(contributor1);
+        usdc.approve(address(fund), 500e6);
+        fund.contribute(0, 500e6);
+        vm.stopPrank();
+
+        // Get contribution details
+        (uint256 amount, uint256 timestamp) = fund.getContribution(0, contributor1);
+        assertEq(amount, 500e6);
+        assertEq(timestamp, block.timestamp);
+
+        // Try to get contribution for non-contributor
+        vm.expectRevert("No contribution");
+        fund.getContribution(0, contributor2);
+    }
+
+    function test_GetContributions() public {
+        // Create campaign
+        vm.prank(creator);
+        fund.createCampaign(TITLE, DESCRIPTION, GOAL, DURATION, CATEGORY);
+
+        // First contribution
+        vm.startPrank(contributor1);
+        usdc.approve(address(fund), 600e6);
+        fund.contribute(0, 600e6);
+        vm.stopPrank();
+
+        // Second contribution
+        vm.startPrank(contributor2);
+        usdc.approve(address(fund), 400e6);
+        fund.contribute(0, 400e6);
+        vm.stopPrank();
+
+        // Get all contributions
+        OnChainFund.Contribution[] memory contributions = fund.getContributions(0);
+        
+        // Verify contributions
+        assertEq(contributions.length, 2);
+        assertEq(contributions[0].contributor, contributor1);
+        assertEq(contributions[0].amount, 600e6);
+        assertEq(contributions[1].contributor, contributor2);
+        assertEq(contributions[1].amount, 400e6);
+    }
+
+    function test_UpdateContribution() public {
+        // Create campaign
+        vm.prank(creator);
+        fund.createCampaign(TITLE, DESCRIPTION, GOAL, DURATION, CATEGORY);
+
+        // First contribution
+        vm.startPrank(contributor1);
+        usdc.approve(address(fund), 1000e6);
+        fund.contribute(0, 500e6);
+        vm.stopPrank();
+
+        // Second contribution from same address
+        vm.startPrank(contributor1);
+        fund.contribute(0, 300e6);
+        vm.stopPrank();
+
+        // Get contribution details
+        (uint256 amount, uint256 timestamp) = fund.getContribution(0, contributor1);
+        assertEq(amount, 800e6); // Should be sum of both contributions
+        assertEq(timestamp, block.timestamp);
+
+        // Verify in contributions array
+        OnChainFund.Contribution[] memory contributions = fund.getContributions(0);
+        assertEq(contributions.length, 1); // Should still be one entry
+        assertEq(contributions[0].amount, 800e6);
     }
 } 

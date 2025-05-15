@@ -12,16 +12,23 @@ contract DeployScript is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        // Deploy MockUSDC first
-        MockUSDC mockUSDC = new MockUSDC(owner);
+        address usdcAddress;
+        // Check if MOCK_USDC_ADDRESS env var is set
+        string memory usdcEnv = vm.envOr("MOCK_USDC_ADDRESS", string("") );
+        if (bytes(usdcEnv).length > 0) {
+            usdcAddress = vm.parseAddress(usdcEnv);
+            console.log("Using existing MockUSDC at:", usdcAddress);
+        } else {
+            MockUSDC mockUSDC = new MockUSDC(owner);
+            usdcAddress = address(mockUSDC);
+            console.log("Deployed new MockUSDC to:", usdcAddress);
+        }
         
-        // Deploy OnChainFund with the MockUSDC address
-        OnChainFund onChainFund = new OnChainFund(address(mockUSDC));
+        // Deploy OnChainFund with the USDC address
+        OnChainFund onChainFund = new OnChainFund(usdcAddress);
 
         vm.stopBroadcast();
 
-        // Log the deployed addresses
-        console.log("MockUSDC deployed to:", address(mockUSDC));
         console.log("OnChainFund deployed to:", address(onChainFund));
     }
 } 

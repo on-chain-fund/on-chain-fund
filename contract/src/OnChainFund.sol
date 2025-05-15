@@ -82,7 +82,7 @@ contract OnChainFund {
         
         // Check if contributor already exists
         uint256 contributorIndex = campaign.contributorIndex[msg.sender];
-        if (contributorIndex == 0 && campaign.contributions.length > 0) {
+        if (contributorIndex == 0) {
             // New contributor
             campaign.contributions.push(Contribution({
                 contributor: msg.sender,
