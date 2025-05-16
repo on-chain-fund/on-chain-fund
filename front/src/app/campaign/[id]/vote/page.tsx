@@ -3,14 +3,12 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import { getCampaign } from '../../../types/api';
-import { formatAddress, calculateTimeLeft, calculateProgress } from '../../../utils/format';
-// import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress, formatDate } from '../../../utils/format';
-// import { ContributionsList } from '../../../components/ContributionsList';
-// import { FundingModal } from '../../../components/FundingModal';
+import { formatAddress, formatAmount, calculateTimeLeft, calculateProgress, formatDate } from '../../../utils/format';
+import { ContributionsList } from '../../../components/ContributionsList';
+import { FundingModal } from '../../../components/FundingModal';
 import { LoadingSpinner } from '../../../components/LoadingSpinner';
 import { Campaign, CampaignStatus } from '../../../types/campaign';
-import {GetAddressReturnType } from '@coinbase/onchainkit/identity';
-// import { Avatar, Address, GetAddressReturnType } from '@coinbase/onchainkit/identity';
+import { Avatar, Address, GetAddressReturnType } from '@coinbase/onchainkit/identity';
 import { calculateCampaignStatus } from '@/app/utils/campaignUtils';
 
 
@@ -20,7 +18,7 @@ export default function CampaignDetail() {
   const campaignId = params.id as string;
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const [showFundingModal, setShowFundingModal] = useState(false);
+  const [showFundingModal, setShowFundingModal] = useState(false);
   const [selectedMilestone, setSelectedMilestone] = useState<1 | 2 | 3 | 4 | 5 | null>(null);
   const { address } = useAccount();
 

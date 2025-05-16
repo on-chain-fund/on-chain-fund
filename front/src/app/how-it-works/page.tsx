@@ -49,10 +49,10 @@ function HowItWorks() {
             <h2 className="text-xl font-bold">Key Features</h2>
             <ul>
               <li>
-                <strong>Funding</strong> - If your campaign successfully meets its funding goal before the deadline, the raised capital will be held in a wallet. To access these funds, you'll need to complete the milestones outlined when you created the campaign. Each time you submit a milestone update, funders will vote to approve or reject it based on whether it aligns with your original proposal. If the vote receives at least 70% approval, that stage of funding is unlocked. This process repeats for each milestone until the campaign is complete.
+                <strong>Funding</strong> - If your campaign successfully meets its funding goal before the deadline, the raised capital will be held in a wallet. To access these funds, you&apos;ll need to complete the milestones outlined when you created the campaign. Each time you submit a milestone update, funders will vote to approve or reject it based on whether it aligns with your original proposal. If the vote receives at least 70% approval, that stage of funding is unlocked. This process repeats for each milestone until the campaign is complete.
                   <br/>
                   <br/>
-                If a milestone vote receives between 30%-50% disapproval, you'll have the opportunity to revise your submission and present a second update that better reflects funder expectations. However, if the revised submission still doesn't reach 70% approval, the campaign will end, and remaining funds will be refunded to funders.
+                If a milestone vote receives between 30%-50% disapproval, you&apos;ll have the opportunity to revise your submission and present a second update that better reflects funder expectations. However, if the revised submission still doesn&apos;t reach 70% approval, the campaign will end, and remaining funds will be refunded to funders.
                   <br/>
                   <br/>
                 If a milestone vote receives more than 50% disapproval on the first attempt, the campaign is automatically terminated and all remaining funds are returned to funders.
