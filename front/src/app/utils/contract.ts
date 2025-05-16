@@ -25,7 +25,15 @@ export const CONTRACT_ADDRESS_MAINNET = '0x0AA77a866f3d7F61b294477c87cD41817CA5c
 
 // Create a public client for read operations
 const client = createPublicClient({
-  chain: base,
+  chain: {
+    ...base,
+    rpcUrls: {
+      ...base.rpcUrls,
+      default: {
+        http: [process.env.NEXT_PUBLIC_BASE_RPC_URL || base.rpcUrls.default.http[0]]
+      }
+    }
+  },
   transport: http()
 });
 
