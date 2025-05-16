@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownFundLink, WalletDropdownDisconnect, WalletAdvancedTokenHoldings, WalletAdvancedAddressDetails } from '@coinbase/onchainkit/wallet';
-import { Avatar, Name } from '@coinbase/onchainkit/identity';
+import { Avatar, Name, Identity } from '@coinbase/onchainkit/identity';
 import CreateCampaignButton from './CreateCampaignButton';
 
 export default function Header() {
@@ -74,9 +74,11 @@ export default function Header() {
           <div className="hidden sm:flex items-center space-x-4 relative">
             <CreateCampaignButton />
             <Wallet>
-              <ConnectWallet>
-                <Avatar className="h-6 w-6" />
-                <Name />
+              <ConnectWallet className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <Identity className="!bg-transparent">
+                  <Avatar className="h-6 w-6 mr-2 bg-transparent" />
+                  <Name className="text-white" />
+                </Identity>
               </ConnectWallet>
               <WalletDropdown>
                 <WalletAdvancedAddressDetails />
@@ -152,9 +154,11 @@ export default function Header() {
           </Link>
           <div className="pl-3 pr-4 py-2 space-y-2">
             <Wallet>
-              <ConnectWallet>
-                <Avatar className="h-6 w-6" />
-                <Name />
+              <ConnectWallet className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full">
+                <Identity className="!bg-transparent">
+                  <Avatar className="h-6 w-6 mr-2 bg-transparent" />
+                  <Name className="text-white" />
+                </Identity>
               </ConnectWallet>
               <WalletDropdown>
                 <WalletDropdownFundLink />
