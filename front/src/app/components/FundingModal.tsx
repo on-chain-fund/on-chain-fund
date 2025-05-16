@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Buy } from '@coinbase/onchainkit/buy';
+import { FundButton } from '@coinbase/onchainkit/fund';
 import { useFundCampaign } from '../types/api';
 import { formatAmount } from '../utils/format';
 
@@ -69,20 +70,29 @@ export function FundingModal({ campaignId, campaignTitle, onClose, onSuccess }: 
           {showBuyUSDC ? (
             <div>
               <div className="mb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Buy USDC</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Buy or Fund USDC</h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  You&apos;ll need USDC to fund this campaign. You can buy USDC directly with your credit card.
+                  You&apos;ll need USDC to fund this campaign. You can buy USDC directly with your credit card or fund your wallet.
                 </p>
-                <Buy 
-                  toToken={{
-                    name: 'USD Coin',
-                    address: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
-                    symbol: 'USDC',
-                    decimals: 6,
-                    image: 'https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png',
-                    chainId: 8453,
-                  }}
-                />
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Buy USDC</h4>
+                    <Buy 
+                      toToken={{
+                        name: 'USD Coin',
+                        address: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+                        symbol: 'USDC',
+                        decimals: 6,
+                        image: 'https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png',
+                        chainId: 8453,
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Fund Your Wallet</h4>
+                    <FundButton />
+                  </div>
+                </div>
               </div>
               <button
                 onClick={() => setShowBuyUSDC(false)}
