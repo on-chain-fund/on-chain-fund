@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownFundLink, WalletDropdownDisconnect, WalletAdvancedTokenHoldings, WalletAdvancedAddressDetails } from '@coinbase/onchainkit/wallet';
 import { Avatar, Name } from '@coinbase/onchainkit/identity';
+import CreateCampaignButton from './CreateCampaignButton';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -71,6 +72,7 @@ export default function Header() {
             </nav>
           </div>
           <div className="hidden sm:flex items-center space-x-4 relative">
+            <CreateCampaignButton />
             <Wallet>
               <ConnectWallet>
                 <Avatar className="h-6 w-6" />
