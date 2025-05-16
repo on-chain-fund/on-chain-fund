@@ -25,7 +25,7 @@ export default function CampaignDetail() {
   type MilestoneContent = {
     title: string;
     description: string;
-    status: "Completed" | "In Progress" | "Not Started" | "Voting";
+    status: "Completed" | "In Progress" | "Not Started" | "Voting"| "Success" | "Declined" | "Declined - Revise"| "Executed";
     details: string;
   };
 
@@ -45,7 +45,7 @@ export default function CampaignDetail() {
     3: {
       title: "Assembly, Stress Test & Feedback",
       description: "Quality assurance and testing",
-      status: "Voting",
+      status: "Success",
       details: "Assemble the test units and conduct rigorous stress testing."
     },
     4: {
@@ -205,7 +205,7 @@ export default function CampaignDetail() {
                                                             </div>
                                                         </button>
                                                         <button 
-                                                            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-blue-500 rounded-full shadow-md hover:bg-gray-50 transition-colors group border-4 border-orange-500" 
+                                                            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-blue-500 rounded-full shadow-md hover:bg-gray-50 transition-colors group border-4 border-green-500" 
                                                             style={{ left: '50%', top: '50%' }}
                                                             onClick={() => setSelectedMilestone(3)}
                                                         >
@@ -251,7 +251,11 @@ export default function CampaignDetail() {
                                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                                                             milestoneContent[selectedMilestone].status === "Completed" ? "bg-green-100 text-green-800" :
                                                             milestoneContent[selectedMilestone].status === "In Progress" ? "bg-blue-100 text-blue-800" :
-                                                            milestoneContent[selectedMilestone].status === "Voting" ? "bg-orange-100 text-orange-800" :
+                                                            milestoneContent[selectedMilestone].status === "Declined" ? "bg-red-100 text-red-800" :
+                                                            milestoneContent[selectedMilestone].status === "Success" ? "bg-green-200 text-green-500" :
+                                                            milestoneContent[selectedMilestone].status === "Executed" ? "bg-green-200 text-green-500" :
+                                                            milestoneContent[selectedMilestone].status === "Declined - Revise" ? "bg-orange-200 text-orange-500" :
+                                                            milestoneContent[selectedMilestone].status === "Voting" ? "bg-purple-100 text-purple-800" :
                                                             "bg-gray-100 text-gray-800"
                                                         }`}>
                                                             {milestoneContent[selectedMilestone].status}
@@ -305,7 +309,7 @@ export default function CampaignDetail() {
                                                 <div className="text-green-700 flex justify-between">FOR
                                                   <span>
                                                     <span className="font-mono">8500</span>
-                                                    <span className="text-xs">(75%%)</span>
+                                                    <span className="text-xs">(85%)</span>
                                                   </span>
                                                 </div>
                                                 <div className="text-gray-700 flex justify-between">ABSTAIN 
@@ -336,12 +340,12 @@ export default function CampaignDetail() {
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <span className="relative w-2 h-2 bg-blue-500 rounded-full inline-block after:content-[''] after:absolute after:left-1/2 after:top-full after:-translate-x-1/2 after:w-0.5 after:h-5 after:bg-gray-300"></span>
-                                                        <span>Voting period start</span>
+                                                        <span>Voting period Start</span>
                                                         <span className="ml-auto text-gray-500 font-mono">6:35PM April 25 2025</span>
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <span className="relative w-2 h-2 bg-blue-500 rounded-full inline-block after:content-[''] after:absolute after:left-1/2 after:top-full after:-translate-x-1/2 after:w-0.5 after:h-5 after:bg-gray-300"></span>
-                                                        <span>Voting period end</span>
+                                                        <span>Voting period End</span>
                                                         <span className="ml-auto text-gray-500 font-mono">6:35PM May 1 2025</span>
                                                     </div>
                                                     <div className="flex items-center gap-2">
@@ -371,10 +375,10 @@ export default function CampaignDetail() {
                                             </li>
                                             <li className="flex items-center justify-between">
                                               <div className="flex items-center gap-2">
-                                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-600 text-white text-xs">!</span>
+                                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white text-xs">&#10003;</span>
                                                 <span className="text-xs">Milestone 3</span>
                                               </div>
-                                              <span className="text-xs font-semibold text-orange-600">Voting</span>
+                                              <span className="text-xs font-semibold text-green-600 bg-green-200 p-2 rounded-md">Success</span>
                                             </li>
                                             <li className="flex items-center justify-between">
                                               <div className="flex items-center gap-2">
