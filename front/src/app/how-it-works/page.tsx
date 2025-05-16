@@ -22,16 +22,11 @@ function HowItWorks() {
             <ol>
               <li>
                 <strong>Create a Campaign</strong> - Set up your project with a funding goal, 
-                deadline, and description. All campaigns are stored on the blockchain.
+                milestones, deadlines, and description. All campaigns are stored on the blockchain.
               </li>
               <li>
                 <strong>Share Your Campaign</strong> - Once created, share your campaign with 
                 your community and the wider OnChainFund audience.
-              </li>
-              <li>
-                <strong>Receive Funds</strong> - If your campaign reaches its funding goal before 
-                the deadline, you can claim the funds to your wallet. If not, all contributions 
-                are automatically refunded to the funders.
               </li>
             </ol>
             <br/>
@@ -42,8 +37,8 @@ function HowItWorks() {
                 and find projects you want to support.
               </li>
               <li>
-                <strong>Fund Projects</strong> - Contribute ETH to campaigns you believe in. You can 
-                use your existing crypto wallet or purchase ETH directly through our platform.
+                <strong>Fund Projects</strong> - Contribute USDC to campaigns you believe in. You can 
+                use your existing crypto wallet or purchase USDC directly through our platform.
               </li>
               <li>
                 <strong>Get Refunds Automatically</strong> - If a campaign doesn&apos;t reach its goal by 
@@ -54,20 +49,29 @@ function HowItWorks() {
             <h2 className="text-xl font-bold">Key Features</h2>
             <ul>
               <li>
+                <strong>Funding</strong> - If your campaign successfully meets its funding goal before the deadline, the raised capital will be held in a wallet. To access these funds, you'll need to complete the milestones outlined when you created the campaign. Each time you submit a milestone update, funders will vote to approve or reject it based on whether it aligns with your original proposal. If the vote receives at least 70% approval, that stage of funding is unlocked. This process repeats for each milestone until the campaign is complete.
+                  <br/>
+                  <br/>
+                If a milestone vote receives between 30%-50% disapproval, you'll have the opportunity to revise your submission and present a second update that better reflects funder expectations. However, if the revised submission still doesn't reach 70% approval, the campaign will end, and remaining funds will be refunded to funders.
+                  <br/>
+                  <br/>
+                If a milestone vote receives more than 50% disapproval on the first attempt, the campaign is automatically terminated and all remaining funds are returned to funders.
+                  <br/>
+                  <br/>
+                If your campaign does not reach its funding goal by the deadline, all contributions will be automatically refunded to the funders.
+                  <br/>
+              </li>
+              <li>
                 <strong>Smart Wallet Integration</strong> - Use Coinbase&apos;s Smart Wallet for a seamless 
                 experience, even if you&apos;re new to crypto.
               </li>
               <li>
-                <strong>Fiat Onramp</strong> - Purchase ETH directly with your credit card or bank account 
+                <strong>Fiat Onramp</strong> - Purchase USDC directly with your credit card or bank account 
                 to fund projects.
               </li>
               <li>
                 <strong>Gas-Free Transactions</strong> - We cover gas fees for your transactions through 
                 the Paymaster API, making it easier to participate.
-              </li>
-              <li>
-                <strong>All-or-Nothing Funding</strong> - Creators only receive funds if they reach their 
-                goal, protecting funders from partially funded projects.
               </li>
               <li>
                 <strong>Transparent & Secure</strong> - All transactions are recorded on the Base blockchain, 
