@@ -31,7 +31,7 @@ export function useCreateCampaign() {
     const goalAmount = BigInt(Math.floor(campaign.goalAmount * 10**6));
 
     writeContract({
-      address: CONTRACT_ADDRESS_TESTNET,
+      address: CONTRACT_ADDRESS_MAINNET,
       abi: CONTRACT_ABI,
       functionName: 'createCampaign',
       args: [
@@ -73,7 +73,7 @@ export function useFundCampaign() {
         abi: mockUsdcAbi,
         functionName: 'approve',
         args: [
-          CONTRACT_ADDRESS_TESTNET,
+          CONTRACT_ADDRESS_MAINNET,
           BigInt(amount * 1e6) // Convert to USDC decimals
         ]
       });
@@ -85,7 +85,7 @@ export function useFundCampaign() {
       console.log('Contributing to campaign...');
       // Then contribute to the campaign
       const contributeTx = await writeContract({
-        address: CONTRACT_ADDRESS_TESTNET,
+        address: CONTRACT_ADDRESS_MAINNET,
         abi: CONTRACT_ABI,
         functionName: 'contribute',
         args: [

@@ -31,34 +31,34 @@ export default function CampaignDetail() {
 
   const milestoneContent: Record<1 | 2 | 3 | 4 | 5, MilestoneContent> = {
     1: {
-      title: "Planning Phase",
+      title: "Companion Design",
       description: "Initial project planning and requirements gathering",
       status: "Completed",
-      details: "Project scope defined, requirements documented, and initial timeline established."
+      details: "Submit Robot Design."
     },
     2: {
-      title: "Development Phase",
-      description: "Core development and implementation",
+      title: "Manufacutering & Testing",
+      description: "Fabrication Testing",
       status: "Completed",
-      details: "Active development of core features and functionality."
+      details: "Find Manufacturer and produce initial test parts"
     },
     3: {
-      title: "Testing Phase",
+      title: "Assembly, Stress Test & Feedback",
       description: "Quality assurance and testing",
       status: "Voting",
-      details: "Comprehensive testing of all features and functionality."
+      details: "Assemble the test units and conduct rigorous stress testing."
     },
     4: {
-      title: "Launch Phase",
-      description: "Final deployment and launch",
+      title: "Finalize Design, Live Venue Demo & Preorders",
+      description: "Complete design and demo at a venue",
       status: "Not Started",
-      details: "Final preparations and public release."
+      details: "Incorporate feedback to finalize the design, showcase HumiBot with live demos at events, and open up preorders to early supporters."
     },
     5: {
-      title: "Campaign Completed",
-      description: "Project successfully delivered",
+      title: "Fabrication & Delivery",
+      description: "Manufacture and deliver final products",
       status: "Not Started",
-      details: "All milestones completed and project delivered."
+      details: "All milestones completed and all orders have been delivered."
     }
   };
 
@@ -68,7 +68,7 @@ export default function CampaignDetail() {
       try {
         const data = await getCampaign(campaignId);
         if (!data) {
-          router.push('/');
+          router.push('/home');
           return;
         }
         setCampaign(data);
@@ -135,7 +135,8 @@ export default function CampaignDetail() {
             <div className='flex gap-8 lg:gap-16 justify-between items-start max-w-[76rem] flex-col md:flex-row md:items-start md:justify-between'>
                 <div className='flex flex-col gap-4 w-full'>
                     <div className='p-4'>
-                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{campaign.title}</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Wall-E 🤖 Your Tiny Cleaning Companion</h1>
+                        {/* <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{campaign.title}</h1> */}
                         <p className="text-gray-600">
                             by {formatAddress(campaign.creator as GetAddressReturnType)}
                             {isCreator && <span className="ml-2 text-blue-600 text-sm">(You)</span>}
@@ -145,15 +146,23 @@ export default function CampaignDetail() {
                         <div className='flex'>
                             <div className="bg-gray-50 p-4 border border-line rounded-lg w-fit mr-2">
                                 <h3 className="text-xs font-medium text-gray-500">Category</h3>
-                                <p className="mt-1 text-xs font-semibold text-gray-900">{campaign.category}</p>
+                                <p className="mt-1 text-xs font-semibold text-gray-900">Technology</p>
+                                {/* <p className="mt-1 text-xs font-semibold text-gray-900">{campaign.category}</p> */}
                             </div>
                             <div className="bg-gray-50 p-4 border border-line rounded-lg w-fit mr-2">
-                                <h3 className="text-sm font-medium text-gray-500">Created</h3>
-                                <p className="mt-1 text-xs font-semibold text-gray-900">{formatDate(new Date(campaign.deadline.getTime() - 30 * 24 * 60 * 60 * 1000))}</p>
+                                <h3 className="text-xs font-medium text-gray-500">Created</h3>
+                                {/* <p className="mt-1 text-xs font-semibold text-gray-900">{formatDate(new Date(campaign.deadline.getTime() - 30 * 24 * 60 * 60 * 1000))}</p> */}
+                                <p className="mt-1 text-xs font-semibold text-gray-900">January 1, 2025</p>
                             </div>
                             <div className="bg-gray-50 p-4 border border-line rounded-lg w-fit mr-2">
-                                <h3 className="text-sm font-medium text-gray-500">End Date</h3>
-                                <p className="mt-1 text-xs font-semibold text-gray-900">{formatDate(campaign.deadline)}</p>
+                                <h3 className="text-xs font-medium text-gray-500">End Date</h3>
+                                {/* <p className="mt-1 text-xs font-semibold text-gray-900">{formatDate(campaign.deadline)}</p> */}
+                                <p className="mt-1 text-xs font-semibold text-gray-900">March 2, 2025</p>
+                            </div>
+                            <div className="bg-gray-50 p-4 border border-line rounded-lg w-fit mr-2">
+                                <h3 className="text-xs font-medium text-gray-500">Total Funding</h3>
+                                <p className="mt-1 text-xs font-semibold text-gray-900">10,000 USDC</p>
+                                {/* <p className="mt-1 text-xs font-semibold text-gray-900">{campaign.category}</p> */}
                             </div>
                          </div>
                     </div>
@@ -182,7 +191,7 @@ export default function CampaignDetail() {
                                                         >
                                                             <span className="text-xs">🚩</span>
                                                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity min-w-[120px] text-center z-10" style={{ marginLeft: '15px' }}>
-                                                                Milestone 1:<br/>Planning
+                                                                Milestone 1:<br/>Design & Prototype
                                                             </div>
                                                         </button>
                                                         <button 
@@ -192,7 +201,7 @@ export default function CampaignDetail() {
                                                         >
                                                             <span className="text-xs">🚩</span>
                                                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity min-w-[120px] text-center z-10">
-                                                                Milestone 2:<br/>Development
+                                                                Milestone 2:<br/>Material Acquisition
                                                             </div>
                                                         </button>
                                                         <button 
@@ -284,14 +293,185 @@ export default function CampaignDetail() {
                                     <div>
                                         <h1 className='font-semibold text-primary'>Voting Activity</h1>
                                     </div>
+                                    <div>
+                                        <div className="bg-white rounded-lg shadow p-4 mb-6 w-full max-w-xl">
+                                            <h1 className='font-bold pb-2'>Milestone #3</h1>
+                                            <div className="flex w-full h-3 overflow-hidden mb-2 gap-x-0.5 bg-gray-200">
+                                                <div className="bg-green-500" style={{ width: '85%' }}></div>
+                                                <div className="bg-gray-400" style={{ width: '5%' }}></div>
+                                                <div className="bg-red-500" style={{ width: '10%' }}></div>
+                                            </div>
+                                            <div className="flex flex-col justify-between text-xs font-semibold mb-2">
+                                                <div className="text-green-700 flex justify-between">FOR
+                                                  <span>
+                                                    <span className="font-mono">8500</span>
+                                                    <span className="text-xs">(75%%)</span>
+                                                  </span>
+                                                </div>
+                                                <div className="text-gray-700 flex justify-between">ABSTAIN 
+                                                  <span>
+                                                    <span className="font-mono">500</span>
+                                                    <span className="text-xs">(5%)</span>
+                                                  </span>
+                                                  </div>
+                                                <div className="text-red-700 flex justify-between">AGAINST
+                                                  <span>
+                                                    <span className="font-mono">1000</span> 
+                                                    <span className="text-xs">(10%)</span>
+                                                  </span>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center text-xs mb-4 justify-between">
+                                                <span className="font-semibold mr-1">Quorum</span>
+                                                <span className='font-bold'>
+                                                  <span className="font-mono">10,000</span> / <span className="font-mono">5,001</span> Required
+                                                </span>
+                                            </div>
+                                            <div className="border-t pt-3">
+                                                <div className="flex flex-col gap-2 text-xs text-gray-700">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="relative w-2 h-2 bg-gray-400 rounded-full inline-block after:content-[''] after:absolute after:left-1/2 after:top-full after:-translate-x-1/2 after:w-0.5 after:h-5 after:bg-gray-300"></span>
+                                                        <span>Milestone Update Filed</span>
+                                                        <span className="ml-auto text-gray-500 font-mono">6:35PM April 24 2025</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="relative w-2 h-2 bg-blue-500 rounded-full inline-block after:content-[''] after:absolute after:left-1/2 after:top-full after:-translate-x-1/2 after:w-0.5 after:h-5 after:bg-gray-300"></span>
+                                                        <span>Voting period start</span>
+                                                        <span className="ml-auto text-gray-500 font-mono">6:35PM April 25 2025</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="relative w-2 h-2 bg-blue-500 rounded-full inline-block after:content-[''] after:absolute after:left-1/2 after:top-full after:-translate-x-1/2 after:w-0.5 after:h-5 after:bg-gray-300"></span>
+                                                        <span>Voting period end</span>
+                                                        <span className="ml-auto text-gray-500 font-mono">6:35PM May 1 2025</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="relative w-2 h-2 bg-green-500 rounded-full inline-block"></span>
+                                                        <span>Milestone Update Accepted</span>
+                                                        <span className="ml-auto text-gray-500 font-mono">6:35PM May 6 2025</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="w-full max-w-xl bg-white rounded-lg shadow p-3">
+                                          <h2 className="text-sm font-bold mb-2">Milestone Tracker</h2>
+                                          <ul className="space-y-2">
+                                            <li className="flex items-center justify-between">
+                                              <div className="flex items-center gap-2">
+                                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white text-xs">&#10003;</span>
+                                                <span className="text-xs">Milestone 1</span>
+                                              </div>
+                                              <span className="text-xs font-semibold text-green-600">Executed</span>
+                                            </li>
+                                            <li className="flex items-center justify-between">
+                                              <div className="flex items-center gap-2">
+                                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white text-xs">&#10003;</span>
+                                                <span className="text-xs">Milestone 2</span>
+                                              </div>
+                                              <span className="text-xs font-semibold text-green-600">Executed</span>
+                                            </li>
+                                            <li className="flex items-center justify-between">
+                                              <div className="flex items-center gap-2">
+                                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-600 text-white text-xs">!</span>
+                                                <span className="text-xs">Milestone 3</span>
+                                              </div>
+                                              <span className="text-xs font-semibold text-orange-600">Voting</span>
+                                            </li>
+                                            <li className="flex items-center justify-between">
+                                              <div className="flex items-center gap-2">
+                                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-400 text-white text-xs">
+                                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
+                                                  </svg>
+                                                </span>
+                                                <span className="text-xs">Milestone 4</span>
+                                              </div>
+                                              <span className="text-xs font-semibold text-gray-600">Pending</span>
+                                            </li>
+                                            <li className="flex items-center justify-between">
+                                              <div className="flex items-center gap-2">
+                                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-400 text-white text-xs">
+                                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
+                                                  </svg>
+                                                </span>
+                                                <span className="text-xs">Milestone 5</span>
+                                              </div>
+                                              <span className="text-xs font-semibold text-gray-600">Pending</span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                        {/* 
+                                          &#10005 = X
+                                          &#10003 = Checkmark
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
+                                            </svg> - Clock Icon
+                                        */}
+                                    </div>
+                                    <div>
+                                      <div className='flex justify-between'>
+                                        <button
+                                            onClick={() =>{}}
+                                            className="px-6 py-4 rounded-md text-sm font-medium
+                                                bg-blue-600 text-white w-1/3 my-2">
+                                            For
+                                            <br/> 
+                                            (100 USDC)
+                                          </button>
+                                          <button
+                                            onClick={() =>{}}
+                                            className="px-6 py-4 rounded-md text-sm font-medium
+                                                bg-gray-400 text-white w-1/3 my-2 mx-2">
+                                            Abstain
+                                            <br/> 
+                                            (100 USDC)
+                                          </button> <button
+                                            onClick={() =>{}}
+                                            className="px-6 py-4 rounded-md text-sm font-medium
+                                                bg-red-600 text-white w-1/3 my-2">
+                                            Against
+                                            <br/> 
+                                            (100 USDC)
+                                          </button>
+                                      </div>
+                                      <div>
+                                        {/* <button
+                                        className='px-6 py-4 rounded-md text-sm font-medium
+                                                bg-black text-white w-full'>
+                                          Connect Wallet to Vote
+                                        </button> */}
+                                      </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="p-6 border-t border-gray-200">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">About This Campaign</h2>
-                        <p className="text-gray-700 whitespace-pre-line">{campaign.description}</p>
-                    </div>
+                        <h2 className="text-3xl font-semibold text-gray-900 mb-4">About This Campaign</h2>
+                        {/* <p className="text-gray-700 whitespace-pre-line">{campaign.description}</p> */}
+                          <div>
+                            <h1 className='text-2xl'>🤖 Product Launch: <em> Wall-E - Your Tiny Cleaning Companion</em></h1>
+                            <p>Our campaign is all about bringing fresh, clean air to your space with a smart, compact robot designed for everyday comfort.</p>
+                              <br/>
+                            <h2 className='text-xl'>Milestone 1: Submit Robot Design</h2>
+                            <p>We complete and submit the finalized design of HumiBot, ensuring all specifications are ready for the next phase of development.</p>
+                              <br/>
+                            <h2 className='text-xl'>Milestone 2: Find Manufacturer and Order Test Parts</h2>
+                            <p>Identify and partner with a manufacturer to produce initial test parts for HumiBot, enabling us to evaluate build quality and materials.</p>
+                              <br/>
+                            <h2 className='text-xl'>Milestone 3: Assembly, Stress Test & Feedback</h2>
+                            <p>Assemble the test units, conduct rigorous stress testing, and gather feedback to identify any design improvements needed.</p>
+                              <br/>
+                            <h2 className='text-xl'>Milestone 4: Finalize Design, Live Venue Demo & Preorders</h2>
+                            <p>Incorporate feedback to finalize the design, showcase HumiBot with live demos at events, and open up preorders to early supporters.</p>
+                              <br/>
+                            <h2 className='text-xl'>Milestone 5: Fabrication & Delivery</h2>
+                            <p>Begin full-scale fabrication of HumiBot and start delivering the units to customers, marking the official launch.</p>
+                          </div>
+                      </div>
                 </div>
             </div>
         </div>    
